@@ -116,13 +116,6 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        .feedback {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--primary);
-            display: none; /* Escondido por padrão */
-        }
-
         .links-extra {
             margin-top: 25px;
             font-size: 0.8rem;
@@ -132,9 +125,22 @@
         .links-extra a {
             color: #999;
             text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .links-extra a:hover { color: var(--text); }
+        .links-extra a:hover { color: var(--primary); }
+
+        /* Estilo para a mensagem de feedback */
+        #status-msg {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-size: 0.9rem;
+            background: rgba(112, 0, 255, 0.1);
+            border: 1px solid var(--secondary);
+        }
     </style>
 </head>
 <body>
@@ -146,6 +152,7 @@
 <div class="login-container">
     <div class="login-card">
         <h2>Acesso à Arena</h2>
+        
         <form id="loginForm">
             <div class="input-group">
                 <label>Nickname ou Email</label>
@@ -158,27 +165,38 @@
             <button type="submit" class="btn-entrar">Iniciar Sessão</button>
         </form>
 
-        <div id="mensagem" class="feedback">
-            🚀 A ligar aos servidores da Arena... <br>
-            <small>(Sistema de contas em manutenção)</small>
-        </div>
+        <div id="status-msg"></div>
 
         <div class="links-extra">
-            <a href="#">Criar nova conta</a> | <a href="#">Recuperar senha</a>
+            <a onclick="mostrarAviso('criar')">Criar nova conta</a> | 
+            <a onclick="mostrarAviso('senha')">Esqueceu a senha?</a>
         </div>
     </div>
 </div>
 
 <script>
+    function mostrarAviso(tipo) {
+        const msgBox = document.getElementById('status-msg');
+        msgBox.style.display = 'block';
+        
+        if (tipo === 'criar') {
+            msgBox.style.borderColor = "#ff4444";
+            msgBox.style.color = "#ff4444";
+            msgBox.innerHTML = "🚫 <strong>Indisponível:</strong> As inscrições para novos membros estão temporariamente fechadas.";
+        } else if (tipo === 'senha') {
+            msgBox.style.borderColor = var(--primary);
+            msgBox.style.color = var(--primary);
+            msgBox.innerHTML = "🔑 <strong>Recuperação:</strong> Para recuperar a sua senha, contacte a nossa equipa de suporte através do Blog.";
+        }
+    }
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const msg = document.getElementById('mensagem');
-        msg.style.display = 'block';
-        
-        // Simulação de "carregamento"
-        setTimeout(() => {
-            alert("Aviso da Rivalidade Gamer: \n\nO sistema de login real requer um servidor com base de dados. Por agora, esta página serve apenas para demonstração visual!");
-        }, 1500);
+        const msgBox = document.getElementById('status-msg');
+        msgBox.style.display = 'block';
+        msgBox.style.borderColor = "var(--secondary)";
+        msgBox.style.color = "white";
+        msgBox.innerHTML = "⌛ A validar credenciais... (Modo Demonstração)";
     });
 </script>
 
