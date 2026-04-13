@@ -165,40 +165,5 @@
             <button type="submit" class="btn-entrar">Iniciar Sessão</button>
         </form>
 
-        <div id="status-msg"></div>
-
-        <div class="links-extra">
-            <a onclick="mostrarAviso('criar')">Criar nova conta</a> | 
-            <a onclick="mostrarAviso('senha')">Esqueceu a senha?</a>
-        </div>
-    </div>
-</div>
-
-<script>
-    function mostrarAviso(tipo) {
-        const msgBox = document.getElementById('status-msg');
-        msgBox.style.display = 'block';
-        
-        if (tipo === 'criar') {
-            msgBox.style.borderColor = "#ff4444";
-            msgBox.style.color = "#ff4444";
-            msgBox.innerHTML = "🚫 <strong>Indisponível:</strong> As inscrições para novos membros estão temporariamente fechadas.";
-        } else if (tipo === 'senha') {
-            msgBox.style.borderColor = var(--primary);
-            msgBox.style.color = var(--primary);
-            msgBox.innerHTML = "🔑 <strong>Recuperação:</strong> Para recuperar a sua senha, contacte a nossa equipa de suporte através do Blog.";
-        }
-    }
-
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const msgBox = document.getElementById('status-msg');
-        msgBox.style.display = 'block';
-        msgBox.style.borderColor = "var(--secondary)";
-        msgBox.style.color = "white";
-        msgBox.innerHTML = "⌛ A validar credenciais... (Modo Demonstração)";
-    });
-</script>
-
 </body>
 </html>
