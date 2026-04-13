@@ -6,8 +6,8 @@
     <title>Torneios - Rivalidade Gamer</title>
     <style>
         :root {
-            --primary: #00f2ff; /* Neon Blue */
-            --secondary: #7000ff; /* Purple */
+            --primary: #00f2ff;
+            --secondary: #7000ff;
             --bg-dark: #0a0a0c;
             --card-bg: #16161a;
             --text: #ffffff;
@@ -53,46 +53,42 @@
             transition: 0.3s;
         }
 
-        nav a:hover {
-            color: var(--primary);
-        }
+        nav a:hover { color: var(--primary); }
 
         .container {
             max-width: 1000px;
-            margin: 40px auto;            padding: 20px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
         }
 
-        .card {
+        .card-vazio {
             background: var(--card-bg);
-            border-left: 5px solid var(--secondary);
-            padding: 30px;
+            border: 2px dashed #444;
+            padding: 50px 20px;
             border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 30px;
+            margin-top: 20px;
         }
 
-        .btn-login {
-            background: var(--primary);
-            color: #000;
-            padding: 12px 30px;
-            border: none;
+        .icon-aviso {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
             transition: 0.3s;
         }
 
-        .btn-login:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        .status-open {
-            color: #00ff00;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
+        .btn-voltar:hover { background: #5a00cc; }
 
         footer {
             text-align: center;
@@ -105,47 +101,23 @@
 <body>
 
 <nav>
-    <a href="index.html">HOME</a>
-    <a href="torneios.html">TORNEIOS</a>
+    <a href="../index.html">HOME</a>
+    <a href="index.html">TORNEIOS</a>
     <a target="_blank" href="https://rivalidadegamer.blogspot.com">BLOG</a>
-    <a href="login.php" class="btn-login" style="padding: 5px 15px; font-size: 12px;">LOGIN</a>
 </nav>
 
 <header>
     <h1 class="hero-title">Torneios</h1>
-    <p>Desafia os melhores e conquista a glória na Arena</p>
+    <p>Área de Competições</p>
 </header>
 
 <div class="container">
-    <section class="card">
-        <h2>Próximos Grandes Eventos</h2>
-        <p>Aqui podes encontrar a lista de competições ativas. Escolhe o teu jogo, prepara os teus periféricos e inscreve-te!</p>
-    </section>
-
-    <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="card" style="border-left-color: var(--primary);">
-            <span class="status-open">● INSCRIÇÕES ABERTAS</span>
-            <h3>Torneio X1 - League of Legends</h3>
-            <p><strong>Data:</strong> 20 de Abril</p>
-            <p><strong>Prémio:</strong> 1350 RP + Destaque no Ranking</p>
-            <button class="btn-login" style="width: 100%; margin-top: 10px;">Inscrever</button>
-        </div>
-
-        <div class="card" style="border-left-color: var(--primary);">
-            <span class="status-open">● INSCRIÇÕES ABERTAS</span>
-            <h3>Desafio CS2 - Wingman</h3>
-            <p><strong>Data:</strong> 25 de Abril</p>
-            <p><strong>Prémio:</strong> Skins Exclusivas</p>
-            <button class="btn-login" style="width: 100%; margin-top: 10px;">Inscrever</button>
-        </div>
-
-        <div class="card" style="border-left-color: #555;">
-            <span style="color: #ff4444; font-weight: bold;">● ENCERRADO</span>
-            <h3>Torneio de Lançamento</h3>
-            <p><strong>Vencedor:</strong> Player_Gamer99</p>
-            <p>Obrigado a todos os participantes!</p>
-        </div>
-    </section>
+    <div class="card-vazio">
+        <span class="icon-aviso">⏳</span>
+        <h2>Nenhum torneio ativo no momento</h2>
+        <p>Estamos a preparar as próximas arenas! Fica atento ao nosso blog para saberes as datas das próximas inscrições.</p>
+        <a href="../index.html" class="btn-voltar">Voltar à Home</a>
+    </div>
 </div>
 
 <footer>
