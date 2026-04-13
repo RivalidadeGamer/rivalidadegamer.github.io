@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Rivalidade Gamer</title>
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg-dark: #0a0a0c;
+            --card-bg: #16161a;
+            --text: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: #111;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--primary); }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            border-top: 5px solid var(--secondary);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--secondary);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: var(--primary);
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+        }
+
+        .btn-entrar {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-entrar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            display: none; /* Escondido por padrão */
+        }
+
+        .links-extra {
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .links-extra a {
+            color: #999;
+            text-decoration: none;
+        }
+
+        .links-extra a:hover { color: var(--text); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">VOLTAR AO SITE</a>
+</nav>
+
+<div class="login-container">
+    <div class="login-card">
+        <h2>Acesso à Arena</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label>Nickname ou Email</label>
+                <input type="text" placeholder="Ex: PlayerOne" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-entrar">Iniciar Sessão</button>
+        </form>
+
+        <div id="mensagem" class="feedback">
+            🚀 A ligar aos servidores da Arena... <br>
+            <small>(Sistema de contas em manutenção)</small>
+        </div>
+
+        <div class="links-extra">
+            <a href="#">Criar nova conta</a> | <a href="#">Recuperar senha</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('mensagem');
+        msg.style.display = 'block';
+        
+        // Simulação de "carregamento"
+        setTimeout(() => {
+            alert("Aviso da Rivalidade Gamer: \n\nO sistema de login real requer um servidor com base de dados. Por agora, esta página serve apenas para demonstração visual!");
+        }, 1500);
+    });
+</script>
+
+</body>
+</html>
