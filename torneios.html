@@ -130,9 +130,22 @@
     <p>Área de Competições</p>
 </header>
 
+    <style>
+.rodar {
+    display: inline-block;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+
+
 <div class="container">
     <div class="card-vazio">
-        <span class="icon-aviso">⏳</span>
+        <span class="rodar" class="icon-aviso">⏳</span>
         <h2>Nenhum torneio ativo no momento</h2>
         <p>Estamos a preparar as próximas arenas! Fica atento ao nosso blog para saberes as datas das próximas inscrições.</p>
         <a href="../index.html" class="btn-voltar">Voltar à Home</a>
