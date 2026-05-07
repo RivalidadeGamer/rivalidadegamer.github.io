@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rivalidade Gamer</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- CSS REAL DO TEU SITE -->
+    <link rel="stylesheet" href="https://rivalidadegamer.github.io/assets/css/style.css">
 </head>
 <body>
 
 <header>
-    <div class="slideshow">
-        <img src="https://rivalidadegamer.github.io/images/headers/header1.png" class="slide active">
-        <img src="https://rivalidadegamer.github.io/images/headers/header2.png" class="slide">
+    <div class="header-slideshow">
+        <img src="https://rivalidadegamer.github.io/images/headers/header1.png" class="active">
+        <img src="https://rivalidadegamer.github.io/images/headers/header2.png">
     </div>
 
-    <nav>
+    <nav class="navbar">
         <ul>
             <li><a href="/about.html">Sobre</a></li>
             <li><a href="/contact.html">Contactos</a></li>
@@ -24,28 +26,30 @@
     </nav>
 </header>
 
-<main>
+<main class="content">
+
     <section class="intro">
         <h1>Bem-vindo ao Rivalidade Gamer</h1>
-        <p>Este é o portal oficial do canal gamer Rivalidade Gamer. Aqui encontras informações sobre o criador, contactos, estúdios parceiros e eventos futuros.</p>
+        <p>O portal oficial do canal gamer Rivalidade Gamer. Aqui encontras informações sobre o criador, contactos, estúdios parceiros e eventos futuros.</p>
     </section>
 
-    <section class="resumos">
+    <section class="cards">
+
         <div class="card">
             <h2>Sobre</h2>
-            <p>Conhece a história do canal, a equipa e a missão por trás do projeto.</p>
+            <p>Conhece a história do canal e a equipa por trás do projeto.</p>
             <a href="/about.html" class="btn">Ler mais</a>
         </div>
 
         <div class="card">
             <h2>Contactos</h2>
-            <p>Precisas de falar connosco? Aqui tens todas as formas de contacto.</p>
+            <p>Entra em contacto connosco através das várias formas disponíveis.</p>
             <a href="/contact.html" class="btn">Contactar</a>
         </div>
 
         <div class="card">
             <h2>Studios</h2>
-            <p>Explora os estúdios parceiros e projetos em desenvolvimento.</p>
+            <p>Explora os estúdios parceiros e os projetos em desenvolvimento.</p>
             <a href="/Studios/" class="btn">Ver Studios</a>
         </div>
 
@@ -54,12 +58,14 @@
             <p>Consulta os próximos eventos, torneios e lives especiais.</p>
             <a href="/event.html" class="btn">Ver Eventos</a>
         </div>
+
     </section>
+
 </main>
 
 <script>
     // Slideshow automático
-    let slides = document.querySelectorAll(".slide");
+    const slides = document.querySelectorAll(".header-slideshow img");
     let index = 0;
 
     setInterval(() => {
