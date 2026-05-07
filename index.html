@@ -1,141 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rivalidade Gamer</title>
-    <style>
-        :root {
-            --primary: #00f2ff; /* Neon Blue */
-            --secondary: #7000ff; /* Purple */
-            --bg-dark: #0a0a0c;
-            --card-bg: #16161a;
-            --text: #ffffff;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text);
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(90deg, var(--secondary), var(--bg-dark));
-            padding: 60px 20px;
-            text-align: center;
-            border-bottom: 3px solid var(--primary);
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 15px var(--primary);
-            margin: 0;
-        }
-
-        nav {
-            background: #111;
-            padding: 15px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav a {
-            color: var(--text);
-            text-decoration: none;
-            margin: 0 20px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-left: 5px solid var(--secondary);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 30px;
-        }
-
-        .btn-login {
-            background: var(--primary);
-            color: #000;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-login:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<nav>
-    <a href="/">HOME</a>
-    <a href="/torneios.html">TORNEIOS</a>
-    <a target="_blank" href="https://rivalidadegamer.blogspot.com">BLOG</a>
-    <a href="/login.php/" class="btn-login" style="padding: 5px 15px; font-size: 12px;">LOGIN</a>
-</nav>
-
 <header>
-    <h1 class="hero-title">Rivalidade Gamer</h1>
-    <p>A maior plataforma de desafios e torneios X1</p>
+    <div class="slideshow">
+        <img src="https://rivalidadegamer.github.io/images/headers/header1.png" class="slide active">
+        <img src="https://rivalidadegamer.github.io/images/headers/header2.png" class="slide">
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="/about.html">Sobre</a></li>
+            <li><a href="/contact.html">Contactos</a></li>
+            <li><a href="/Studios/">Studios</a></li>
+            <li><a href="/event.html">Events</a></li>
+        </ul>
+    </nav>
 </header>
 
-<div class="container">
-    <section class="card">
-        <h2>Bem-vindo à Arena</h2>
-        <p>A <strong>Rivalidade Gamer</strong> é o lugar onde jogadores de todos os níveis podem testar suas habilidades em competições emocionantes. Organizamos torneios de diversos jogos e oferecemos um sistema de ranking exclusivo.</p>
-        
-        <p>Aqui, a competição é levada a sério. Mostre que você é o melhor e conquiste seu lugar no topo!</p>
-        
-        <button class="btn-login" onclick="location.href='login.html'">Entrar na Arena</button>
+<main>
+    <section class="intro">
+        <h1>Bem-vindo ao Rivalidade Gamer</h1>
+        <p>Este é o portal oficial do canal gamer Rivalidade Gamer. Aqui encontras informações sobre o criador, contactos, estúdios parceiros e eventos futuros.</p>
     </section>
 
-    <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="card" style="border-left-color: var(--primary);">
-            <h3>Inscrições Abertas</h3>
-            <p>Confira os torneios da semana e garanta sua vaga.</p>
+    <section class="resumos">
+        <div class="card">
+            <h2>Sobre</h2>
+            <p>Conhece a história do canal, a equipa e a missão por trás do projeto.</p>
+            <a href="/about.html" class="btn">Ler mais</a>
         </div>
-        <div class="card" style="border-left-color: var(--primary);">
-            <h3>Premiações</h3>
-            <p>Vença desafios e acumule pontos para trocar por prêmios.</p>
+
+        <div class="card">
+            <h2>Contactos</h2>
+            <p>Precisas de falar connosco? Aqui tens todas as formas de contacto.</p>
+            <a href="/contact.html" class="btn">Contactar</a>
+        </div>
+
+        <div class="card">
+            <h2>Studios</h2>
+            <p>Explora os estúdios parceiros e projetos em desenvolvimento.</p>
+            <a href="/Studios/" class="btn">Ver Studios</a>
+        </div>
+
+        <div class="card">
+            <h2>Events</h2>
+            <p>Consulta os próximos eventos, torneios e lives especiais.</p>
+            <a href="/event.html" class="btn">Ver Eventos</a>
         </div>
     </section>
-</div>
+</main>
 
-<footer>
-    &copy; 2026 Rivalidade Gamer - Todos os direitos reservados.
-</footer>
+<script>
+    // Slideshow automático
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
+
+    setInterval(() => {
+        slides[index].classList.remove("active");
+        index = (index + 1) % slides.length;
+        slides[index].classList.add("active");
+    }, 4000);
+</script>
 
 </body>
 </html>
