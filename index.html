@@ -5,75 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rivalidade Gamer</title>
 
-    <!-- CSS REAL DO TEU SITE -->
-    <link rel="stylesheet" href="https://rivalidadegamer.github.io/assets/css/style.css">
+<style>
+/* Variáveis de Cores e Fontes */
+:root {
+ --primary-color: #2563eb;
+ --dark-color: #1e293b;
+ --light-bg: #f8fafc;
+ --text-main: #334155;
+ --text-muted: #64748b;
+ --white: #ffffff;
+ --font-main: 'Inter', sans-serif;
+}
+
+/* Reset Básico */
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+
+body {
+ font-family: var(--font-main);
+ line-height: 1.6;
+ color: var(--text-main);
+ background-color: var(--white);
+ overflow-x: hidden;
+}
+
+.container {
+ max-width: 1100px;
+ margin: 0 auto;
+ padding: 0 2rem;
+}
+
+/* Navbar */
+.navbar {
+ height: 80px;
+ display: flex;
+ align-items: center;
+ background: var(--white);
+ border-bottom: 1px solid #e2e8f0;
+ position: sticky;
+ top: 0;
+ z-index: 1000;
+}
+
+.navbar .container {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ width: 100%;
+}
+
+.logo {
+ font-size: 1.5rem;
+ font-weight: 700;
+ text-decoration: none;
+ color: var(--dark-color);
+}
+
+.logo span {
+ color: var(--primary-color);
+}
+
+.nav-links {
+ display: flex;
+ list-style: none;
+ align-items: center;
+}
+
+.nav-links li {
+ margin-left: 2rem;
+}
+
+.nav-links a {
+ text-decoration: none;
+ color: var(--text-main);
+ font-weight: 500;
+ transition: color 0.3s;
+}
+
+.nav-links a:hover {
+ color: var(--primary-color);
+}
+
+.btn-nav {
+ background: var(--primary-color);
+ color: white !important;
+ padding: 0.6rem 1.2rem;
+ border-radius: 8px;
+}
+
+/* Hero Section */
+.hero {
+ padding: 100px 0;
+ background: linear-gradient(to bottom right, #f8fafc, #ffffff);
+ text-align: center;
+}
+
+.hero h1 {
+ font-size: 3.5rem;
+ color: var(--dark-color);
+ margin-bottom: 1.5rem;
+ line-height: 1.2;
+}
+
+.hero h1 span {
+ color: var(--primary-color);
+}
+
+.hero p {
+ font-size: 1.2rem;
+ color: var(--text-muted);
+ max-width: 600px;
+ margin: 0 auto 2.5rem;
+}
+
+.btn-primary, .btn-secondary {
+ display: inline-block;
+ padding: 0.8rem 2rem;
+ border-radius: 8px;
+ text-decoration: none;
+ font-weight: 600;
+ transition: transform 0.2s;
+ margin: 0 0.5rem;
+}
+
+.btn-primary {
+ background: var(--primary-color);
+ color: white;
+}
+
+.btn-secondary {
+ background: #e2e8f0;
+ color: var(--dark-color);
+}
+
+.btn-primary:hover {
+ transform: translateY(-3px);
+}
+
+/* Cards */
+.features {
+ padding: 80px 0;
+ background: var(--light-bg);
+}
+
+.grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+ gap: 2rem;
+}
+
+.card {
+ background: white;
+ padding: 2rem;
+ border-radius: 12px;
+ box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+ transition: box-shadow 0.3s;
+}
+
+.card:hover {
+ box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+ margin-bottom: 1rem;
+ color: var(--dark-color);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+ .nav-links {
+     display: none;
+ }
+ .hero h1 {
+     font-size: 2.5rem;
+ }
+}
+</style>
+
 </head>
 <body>
 
-<header>
-    <div class="header-slideshow">
-        <img src="https://rivalidadegamer.github.io/images/headers/header1.png" class="active">
-        <img src="https://rivalidadegamer.github.io/images/headers/header2.png">
-    </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="container">
+        <a class="logo" href="/">Rivalidade<span>Gamer</span></a>
 
-    <nav class="navbar">
-        <ul>
+        <ul class="nav-links">
             <li><a href="/about.html">Sobre</a></li>
             <li><a href="/contact.html">Contactos</a></li>
             <li><a href="/Studios/">Studios</a></li>
             <li><a href="/event.html">Events</a></li>
         </ul>
-    </nav>
-</header>
+    </div>
+</nav>
 
-<main class="content">
+<!-- HERO -->
+<section class="hero">
+    <h1>Bem-vindo ao <span>Rivalidade Gamer</span></h1>
+    <p>O portal oficial do canal gamer com informações sobre o criador, contactos, estúdios parceiros e eventos.</p>
+</section>
 
-    <section class="intro">
-        <h1>Bem-vindo ao Rivalidade Gamer</h1>
-        <p>O portal oficial do canal gamer Rivalidade Gamer. Aqui encontras informações sobre o criador, contactos, estúdios parceiros e eventos futuros.</p>
-    </section>
-
-    <section class="cards">
+<!-- CARDS -->
+<section class="features">
+    <div class="container grid">
 
         <div class="card">
-            <h2>Sobre</h2>
+            <h3>Sobre</h3>
             <p>Conhece a história do canal e a equipa por trás do projeto.</p>
-            <a href="/about.html" class="btn">Ler mais</a>
+            <a href="/about.html" class="btn-primary">Ler mais</a>
         </div>
 
         <div class="card">
-            <h2>Contactos</h2>
+            <h3>Contactos</h3>
             <p>Entra em contacto connosco através das várias formas disponíveis.</p>
-            <a href="/contact.html" class="btn">Contactar</a>
+            <a href="/contact.html" class="btn-primary">Contactar</a>
         </div>
 
         <div class="card">
-            <h2>Studios</h2>
+            <h3>Studios</h3>
             <p>Explora os estúdios parceiros e os projetos em desenvolvimento.</p>
-            <a href="/Studios/" class="btn">Ver Studios</a>
+            <a href="/Studios/" class="btn-primary">Ver Studios</a>
         </div>
 
         <div class="card">
-            <h2>Events</h2>
+            <h3>Events</h3>
             <p>Consulta os próximos eventos, torneios e lives especiais.</p>
-            <a href="/event.html" class="btn">Ver Eventos</a>
+            <a href="/event.html" class="btn-primary">Ver Eventos</a>
         </div>
 
-    </section>
-
-</main>
-
-<script>
-    // Slideshow automático
-    const slides = document.querySelectorAll(".header-slideshow img");
-    let index = 0;
-
-    setInterval(() => {
-        slides[index].classList.remove("active");
-        index = (index + 1) % slides.length;
-        slides[index].classList.add("active");
-    }, 4000);
-</script>
+    </div>
+</section>
 
 </body>
 </html>
