@@ -1,80 +1,192 @@
-
-
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RivalidadeGamer ————— Studios</title>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#000;--text:#c8c8c8;--accent:#8b0000;--btn-color:#aaaaaa;--btn-border:#666;--btn-glow:rgba(170,170,170,0.2);}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:"Share Tech Mono",monospace;overflow-x:hidden;}
-#noise{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.045;}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 38%,rgba(0,0,0,0.88) 100%);}
-#app{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px 120px;}
-#post{max-width:680px;width:100%;text-align:center;animation:flicker 1.4s ease forwards;}
-@keyframes flicker{0%{opacity:0}8%{opacity:.3}10%{opacity:0}20%{opacity:.6}22%{opacity:.05}35%{opacity:.9}37%{opacity:.1}50%{opacity:.95}52%{opacity:.4}65%{opacity:1}100%{opacity:1}}
-.blk-text{font-family:"VT323",monospace;font-size:clamp(1.1rem,2.5vw,1.45rem);line-height:1.75;color:var(--text);text-shadow:0 0 10px rgba(200,200,200,0.18);white-space:pre-wrap;word-break:break-word;margin:22px 0;}
-.blk-image{margin:22px 0;}
-.blk-image img{display:block;filter:brightness(.9) contrast(1.1);box-shadow:0 0 60px rgba(0,0,0,.95);}
-.blk-audio{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap;margin:22px 0;}
-.blk-audio .lbl{font-family:"VT323",monospace;font-size:1rem;color:#555;text-transform:uppercase;letter-spacing:2px;}
-.blk-audio audio{height:28px;opacity:.6;}
-.blk-audio audio:hover{opacity:1;}
-.blk-prog{text-align:center;padding:8px 0;margin:22px 0;}
-.blk-prog .plbl{font-family:"VT323",monospace;font-size:.9rem;color:#3a3a3a;text-transform:uppercase;letter-spacing:3px;margin-bottom:10px;}
-.blk-prog .pval{font-family:"VT323",monospace;font-size:.82rem;color:#3a3a3a;margin-top:6px;letter-spacing:2px;}
-.blk-div{margin:28px auto;}
-.dots{font-family:"VT323",monospace;font-size:4rem;color:#141414;letter-spacing:14px;animation:pd 5s ease-in-out infinite;}
-@keyframes pd{0%,100%{opacity:.15}50%{opacity:.45}}
-#bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;padding:18px 20px;display:flex;flex-direction:column;align-items:center;gap:9px;background:linear-gradient(to top,rgba(0,0,0,.97) 55%,transparent);}
-#xbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-.xbtn{font-family:"VT323",monospace;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:#484848;text-decoration:none;border:1px solid #1e1e1e;padding:5px 14px;transition:all .2s;background:transparent;}
-.xbtn:hover{color:#888;border-color:#333;}
-#btnp{font-family:"VT323",monospace;font-size:1.1rem;letter-spacing:4px;text-transform:uppercase;color:var(--btn-color);border:1px solid var(--btn-border);padding:10px 38px;cursor:pointer;background:transparent;transition:all .35s;position:relative;outline:none;}
-#btnp:hover{color:#fff;border-color:var(--btn-color);box-shadow:0 0 20px var(--btn-glow);}
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:100;align-items:center;justify-content:center;}
-#overlay.open{display:flex;}
-#mbox{max-width:460px;width:90%;border:1px solid #181818;padding:36px 28px;background:#020202;position:relative;}
-#mtitle{font-family:"VT323",monospace;font-size:.9rem;letter-spacing:5px;text-transform:uppercase;color:#242424;margin-bottom:24px;text-align:center;}
-#mclose{position:absolute;top:12px;right:16px;font-family:"VT323",monospace;font-size:1.1rem;color:#2a2a2a;cursor:pointer;background:none;border:none;}
-#mclose:hover{color:#777;}
-#plist{list-style:none;}
-#plist li{border-bottom:1px solid #0c0c0c;}
-#plist a{display:block;padding:13px 0;font-family:"VT323",monospace;font-size:1.05rem;letter-spacing:2px;color:#484848;text-decoration:none;transition:all .2s;}
-#plist a:hover{color:var(--text);padding-left:8px;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RivalidadeGamerStudios | Official Site</title>
+    <style>
+        /* CSS Geral */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d0d;
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        /* Header e Navegação */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: rgba(0, 0, 0, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #ff4d00; /* Cor de destaque: Laranja Gamer */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff4d00;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80');
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #ccc;
+        }
+
+        /* Seção de Jogos (Cards) */
+        .games {
+            padding: 50px 10%;
+        }
+
+        .games h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .grid-games {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #333;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff4d00;
+        }
+
+        .game-thumb {
+            width: 100%;
+            height: 200px;
+            background-color: #333;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        /* Rodapé */
+        footer {
+            background: #000;
+            padding: 40px 10%;
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 50px;
+        }
+
+        .btn {
+            background-color: #ff4d00;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-<canvas id="noise"></canvas>
-<div id="app"><div id="post"><div class="dots">. . .</div></div></div>
-<div id="bottom"><div id="xbtns"></div><button id="btnp">outros projetos</button></div>
-<div id="overlay"><div id="mbox"><button id="mclose">&#x2715;</button><div id="mtitle">Projetos RivalidadeGamer</div><ul id="plist"></ul></div></div>
-<script>
-var KEY="$2a$10$ufgzQUfgCs2fLK8dtBAKnuhTaok9s1.P2IwWlPX8is64S4VopQvsy";
-var BIN="69d7914236566621a8948798";
-(function(){var c=document.getElementById("noise"),x=c.getContext("2d");function rs(){c.width=innerWidth;c.height=innerHeight;}function dr(){if(!c.width||!c.height)return;var d=x.createImageData(c.width,c.height),p=d.data;for(var i=0;i<p.length;i+=4){var v=Math.random()*255|0;p[i]=p[i+1]=p[i+2]=v;p[i+3]=20;}x.putImageData(d,0,0);}rs();addEventListener("resize",rs);setInterval(dr,65);dr();})();
-function eh(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function ea(s){return String(s||"").replace(/"/g,"&quot;");}
-function applySettings(s){if(!s)return;if(s.backgroundType==="image"&&s.backgroundValue){document.body.style.backgroundImage="url("+s.backgroundValue+")";document.body.style.backgroundSize="cover";document.body.style.backgroundPosition="center";document.body.style.backgroundAttachment="fixed";}else if(s.backgroundType==="color"&&s.backgroundValue){document.body.style.background=s.backgroundValue;document.documentElement.style.setProperty("--bg",s.backgroundValue);}if(s.btnColor){document.documentElement.style.setProperty("--btn-color",s.btnColor);document.documentElement.style.setProperty("--btn-border",s.btnColor);}}
-function renderBlock(b){if(b.type==="text"){var sty="";if(b.color)sty+="color:"+b.color+";";if(b.fontSize)sty+="font-size:"+b.fontSize+"px;";if(b.bold)sty+="font-weight:bold;";if(b.italic)sty+="font-style:italic;";if(b.align)sty+="text-align:"+b.align+";";if(b.letterSpacing)sty+="letter-spacing:"+b.letterSpacing+"px;";return '<div class="blk-text" style="'+sty+'">'+eh(b.content||"")+'</div>';}
-if(b.type==="image"){if(!b.src)return"";var iw=(b.imgWidth||100)+"%";var algn=b.align||"center";var marg=algn==="left"?"0 auto 0 0":algn==="right"?"0 0 0 auto":"0 auto";return '<div class="blk-image" style="text-align:'+algn+'"><img src="'+b.src+'" alt="" loading="lazy" style="max-width:'+iw+';max-height:72vh;margin:'+marg+'"></div>';}
-if(b.type==="audio"){if(!b.src)return"";return '<div class="blk-audio">'+(b.label?'<span class="lbl">'+eh(b.label)+'</span>':"")+'<audio controls src="'+b.src+'"></audio></div>';}
-if(b.type==="progress"){var v=Math.min(100,Math.max(0,b.value||0));var tw=(b.trackWidth||420)+"px";var th=(b.trackHeight||5)+"px";var fc=b.barColor||"linear-gradient(90deg,#3a0000,#8b0000)";var bg=b.trackBg||"#0e0e0e";return '<div class="blk-prog">'+(b.label?'<div class="plbl">'+eh(b.label)+'</div>':"")+'<div style="max-width:'+tw+';height:'+th+';background:'+bg+';border:1px solid #1c1c1c;margin:0 auto;overflow:hidden"><div data-v="'+v+'" style="width:0%;height:100%;background:'+fc+';transition:width 1.5s cubic-bezier(.23,1,.32,1)"></div></div><div class="pval">'+v+'%</div></div>';}
-if(b.type==="divider"){var dw=(b.divWidth||50)+"px";var dh=(b.divHeight||1)+"px";var dc=b.divColor||"#111";return '<div class="blk-div" style="width:'+dw+';height:'+dh+';background:'+dc+'"></div>';}
-return"";}
-function renderPost(post){var c=document.getElementById("post");if(!post||!post.blocks||!post.blocks.length){c.innerHTML='<div class="dots">. . .</div>';return;}c.innerHTML=post.blocks.map(renderBlock).join("");setTimeout(function(){document.querySelectorAll("[data-v]").forEach(function(el){el.style.width=el.dataset.v+"%";});},200);}
-function renderProjectos(list){var ul=document.getElementById("plist");if(!list||!list.length){ul.innerHTML='<li style="color:#222;font-family:VT323,monospace;padding:12px 0">Sem projetos</li>';return;}ul.innerHTML=list.map(function(p){return'<li><a href="'+ea(p.url)+'" target="_blank" rel="noopener">'+eh(p.name)+'</a></li>';}).join("");}
-function renderXBtns(btns){var a=document.getElementById("xbtns");a.innerHTML=(btns||[]).map(function(b){return'<a class="xbtn" href="'+ea(b.url)+'" target="_blank" rel="noopener">'+eh(b.label)+'</a>';}).join("");}
-document.getElementById("btnp").onclick=function(){document.getElementById("overlay").classList.add("open");};
-document.getElementById("mclose").onclick=function(){document.getElementById("overlay").classList.remove("open");};
-document.getElementById("overlay").onclick=function(e){if(e.target===this)this.classList.remove("open");};
-document.addEventListener("keydown",function(e){if(e.key==="Escape")document.getElementById("overlay").classList.remove("open");});
-var FALLBACK={projetos:[{id:"p1",name:"RivalidadeGamerPost",url:"https://rivalidadegamer.github.io/FoxyStudio/PC-antigo/"}]};
-fetch("https://api.jsonbin.io/v3/b/"+BIN+"/latest",{headers:{"X-Master-Key":KEY}}).then(function(r){return r.ok?r.json():null;}).then(function(j){var d=j?j.record:FALLBACK;applySettings(d.settings);renderPost(d.post);renderProjectos(d.projetos||FALLBACK.projetos);renderXBtns(d.extraButtons||[]);}).catch(function(){renderPost(null);renderProjectos(FALLBACK.projetos);renderXBtns([]);});
-</script>
+
+    <header>
+        <div class="logo">
+            <img src="https://rivalidadegamer.weebly.com/uploads/1/5/4/5/154559966/published/riva-fot.png" alt="Logo RivalidadeGamerStudios">
+            <span>RivalidadeGamerStudios</span>
+        </div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#jogos">Jogos</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#contato">Contato</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Onde a Rivalidade Ganha Vida</h1>
+        <p>Desenvolvendo experiências épicas para jogadores reais.</p>
+        <a href="#jogos" class="btn">Ver Nossos Jogos</a>
+    </section>
+
+    <section class="games" id="jogos">
+        <h2>Nossos Projetos</h2>
+        <div class="grid-games">
+            <div class="game-card">
+                <div class="game-thumb" style="background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80') center/cover;"></div>
+                <div class="game-info">
+                    <h3>Projeto Alpha</h3>
+                    <p>Um RPG tático de alta intensidade focado em PvP.</p>
+                </div>
+            </div>
+            <div class="game-card">
+                <div class="game-thumb" style="background: url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80') center/cover;"></div>
+                <div class="game-info">
+                    <h3>Arena de Rivais</h3>
+                    <p>Sobreviva em um mundo pós-apocalíptico com seus amigos.</p>
+                </div>
+            </div>
+            <div class="game-card">
+                <div class="game-thumb" style="background: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80') center/cover;"></div>
+                <div class="game-info">
+                    <h3>Speedway 2026</h3>
+                    <p>Corridas ilegais com customização extrema.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contato">
+        <p>&copy; 2026 RivalidadeGamerStudios. Todos os direitos reservados.</p>
+        <p>Siga-nos em nossas redes sociais para atualizações.</p>
+    </footer>
+
 </body>
 </html>
