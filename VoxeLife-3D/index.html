@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxelLife 3D</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: monospace; }
+#gameCanvas { display: block; width: 100vw; height: 100vh; }
+#ui { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+#hud { position: absolute; bottom: 0; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; }
+#hotbar { display: flex; gap: 4px; background: rgba(0,0,0,0.5); border: 2px solid #555; border-radius: 4px; padding: 4px; pointer-events: all; }
+.slot { width: 52px; height: 52px; border: 2px solid #666; border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 10px; color: #fff; flex-direction: column; gap: 2px; }
+.slot.active { border-color: #fff; background: rgba(255,255,255,0.15); }
+.slot span.icon { font-size: 22px; }
+.slot span.label { font-size: 8px; color: #ccc; }
+#health { position: absolute; bottom: 74px; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; }
+#hunger { position: absolute; bottom: 74px; left: calc(50% + 10px); display: flex; gap: 2px; }
+#mode-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; border: 1px solid #888; border-radius: 4px; padding: 6px 14px; cursor: pointer; pointer-events: all; font-size: 12px; }
+#info { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 8px 12px; border-radius: 4px; font-size: 11px; line-height: 1.9; }
+#crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 26px; text-shadow: 1px 1px 2px #000; user-select: none; }
+#creative-panel { position: absolute; bottom: 84px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); border: 1px solid #555; border-radius: 6px; padding: 14px; display: none; pointer-events: all; max-width: 280px; }
+#creative-panel h3 { color: #fff; font-size: 12px; margin-bottom: 10px; text-align: center; letter-spacing: 1px; text-transform: uppercase; }
+.block-grid { display: grid; grid-template-columns: repeat(5, 52px); gap: 4px; }
+.block-opt { width: 52px; height: 52px; border: 2px solid #555; border-radius: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px; font-size: 9px; color: #fff; transition: border-color 0.15s; }
+.block-opt:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+.block-opt .icon { font-size: 22px; }
+#msg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.92); color: #fff; padding: 28px 40px; border-radius: 10px; display: none; text-align: center; border: 1px solid #555; pointer-events: all; }
+#msg h2 { margin-bottom: 10px; font-size: 24px; }
+#msg p { margin-bottom: 18px; color: #aaa; font-size: 13px; }
+#msg button { background: #3a8; color: #fff; border: none; padding: 10px 24px; border-radius: 5px; cursor: pointer; font-size: 14px; font-family: monospace; }
+#msg button:hover { background: #4b9; }
+#overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); display: flex; align-items: center; justify-content: center; z-index: 10; pointer-events: all; }
+#overlay-box { background: #1a1a1a; border: 2px solid #444; border-radius: 12px; padding: 36px 48px; text-align: center; color: #fff; max-width: 440px; }
+#overlay-box h1 { font-size: 32px; color: #5af; margin-bottom: 8px; letter-spacing: 2px; }
+#overlay-box .sub { color: #aaa; font-size: 13px; margin-bottom: 6px; }
+#overlay-box .controls { color: #777; font-size: 11px; margin-bottom: 24px; line-height: 2; background: rgba(255,255,255,0.04); border-radius: 6px; padding: 10px; }
+#overlay-box .controls b { color: #5af; }
+.start-btn { background: #2a5; color: #fff; border: none; padding: 13px 30px; border-radius: 7px; cursor: pointer; font-size: 15px; margin: 6px; font-family: monospace; letter-spacing: 1px; transition: background 0.2s; }
+.start-btn:hover { background: #3b6; }
+.start-btn.creative { background: #258; }
+.start-btn.creative:hover { background: #369; }
+#paused { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: #fff; padding: 20px 36px; border-radius: 8px; display: none; text-align: center; font-size: 18px; pointer-events: all; border: 1px solid #555; }
+#paused button { background: #555; color: #fff; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-size: 13px; font-family: monospace; margin-top: 12px; }
+#paused button:hover { background: #666; }
+</style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="ui">
+  <!-- Ecrã inicial -->
+  <div id="overlay">
+    <div id="overlay-box">
+      <h1>🌍 VoxelLife 3D</h1>
+      <p class="sub">Explora, constrói e sobrevive num mundo de blocos!</p>
+      <div class="controls">
+        <b>WASD</b> mover &nbsp;|&nbsp; <b>Mouse</b> olhar &nbsp;|&nbsp; <b>Espaço</b> saltar<br>
+        <b>Clique esq</b> destruir &nbsp;|&nbsp; <b>Clique dir</b> colocar<br>
+        <b>1–8</b> / <b>Scroll</b> selecionar bloco &nbsp;|&nbsp; <b>E</b> inventário<br>
+        <b>F</b> comer (sobrevivência) &nbsp;|&nbsp; <b>Esc</b> pausar
+      </div>
+      <button class="start-btn" onclick="startGame('survival')">⚔️ Sobrevivência</button>
+      <button class="start-btn creative" onclick="startGame('creative')">🎨 Criativo</button>
+    </div>
+  </div>
+
+  <!-- Pausa -->
+  <div id="paused">
+    ⏸ Jogo pausado<br>
+    <small style="color:#aaa;font-size:12px">Clica no ecrã para continuar</small><br>
+    <button onclick="document.getElementById('gameCanvas').requestPointerLock()">▶ Continuar</button>
+  </div>
+
+  <!-- Mira -->
+  <div id="crosshair">+</div>
+
+  <!-- Info -->
+  <div id="info">
+    <div id="pos-info">Pos: 0, 0, 0</div>
+    <div id="mode-info">Modo: —</div>
+    <div id="block-info">Bloco: Pedra</div>
+  </div>
+
+  <!-- Botão inventário -->
+  <button id="mode-btn" onclick="togglePanel()">🎒 Inventário [E]</button>
+
+  <!-- Vida e Fome -->
+  <div id="health"></div>
+  <div id="hunger"></div>
+
+  <!-- Barra de ferramentas -->
+  <div id="hud">
+    <div id="hotbar"></div>
+    <div style="height:14px"></div>
+  </div>
+
+  <!-- Painel criativo -->
+  <div id="creative-panel">
+    <h3>Inventário Criativo</h3>
+    <div class="block-grid" id="block-grid"></div>
+  </div>
+
+  <!-- Mensagem de morte -->
+  <div id="msg">
+    <h2 id="msg-title">💀 Morreste!</h2>
+    <p id="msg-body">A tua vida chegou a zero.</p>
+    <button onclick="respawn()">♻️ Renascer</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── DEFINIÇÃO DE BLOCOS ───────────────────────────────────────────
+const BLOCKS = {
+  air:     { id: 0,  name: 'Ar',       color: null },
+  grass:   { id: 1,  name: 'Relva',    color: 0x4a9e3f, side: 0x8B6914, emoji: '🌿' },
+  dirt:    { id: 2,  name: 'Terra',    color: 0x8B6914, emoji: '🟫' },
+  stone:   { id: 3,  name: 'Pedra',    color: 0x888888, emoji: '🪨' },
+  wood:    { id: 4,  name: 'Madeira',  color: 0x6B4226, emoji: '🪵' },
+  leaves:  { id: 5,  name: 'Folhas',   color: 0x2d7a1f, emoji: '🍃' },
+  sand:    { id: 6,  name: 'Areia',    color: 0xe0c060, emoji: '🟡' },
+  water:   { id: 7,  name: 'Água',     color: 0x1a6aff, emoji: '🔵', transparent: true },
+  coal:    { id: 8,  name: 'Carvão',   color: 0x333333, emoji: '⚫' },
+  iron:    { id: 9,  name: 'Ferro',    color: 0xc0a080, emoji: '🔩' },
+  gold:    { id: 10, name: 'Ouro',     color: 0xFFD700, emoji: '🟨' },
+  diamond: { id: 11, name: 'Diamante', color: 0x00ffff, emoji: '💎' },
+  glass:   { id: 12, name: 'Vidro',    color: 0xaaddff, emoji: '🪟', transparent: true },
+  planks:  { id: 13, name: 'Tábua',    color: 0xB8860B, emoji: '🟧' },
+  snow:    { id: 14, name: 'Neve',     color: 0xffffff, emoji: '❄️' },
+  brick:   { id: 15, name: 'Tijolo',   color: 0xAA4040, emoji: '🧱' },
+};
+const BLOCK_LIST = Object.values(BLOCKS).filter(b => b.id > 0);
+
+// ─── MUNDO ────────────────────────────────────────────────────────
+const W = 32, H = 48, D = 32;
+let world = new Uint8Array(W * H * D);
+let meshes = new Map();
+
+function idx(x, y, z) { return x + W * (y + H * z); }
+function getBlock(x, y, z) {
+  if (x < 0 || x >= W || y < 0 || y >= H || z < 0 || z >= D) return 1;
+  return world[idx(x, y, z)];
+}
+function setBlock(x, y, z, id) {
+  if (x < 0 || x >= W || y < 0 || y >= H || z < 0 || z >= D) return;
+  world[idx(x, y, z)] = id;
+}
+
+function generateWorld() {
+  world.fill(0);
+  for (let x = 0; x < W; x++) {
+    for (let z = 0; z < D; z++) {
+      let h = 10 + Math.floor(
+        4 * Math.sin(x * 0.3) * Math.cos(z * 0.3) +
+        2 * Math.sin(x * 0.15 + 1) * Math.sin(z * 0.2 + 2)
+      );
+      for (let y = 0; y < h - 4; y++) setBlock(x, y, z, 3); // pedra
+      for (let y = h - 4; y < h - 1; y++) setBlock(x, y, z, 2); // terra
+      setBlock(x, h - 1, z, 1); // relva
+      if (Math.random() < 0.06 && h > 6) plantTree(x, h, z);
+      if (Math.random() < 0.03) setBlock(x, h - 1, z, 6); // areia
+      if (Math.random() < 0.01) setBlock(x, h, z, 14); // neve
+    }
+  }
+  // Minérios
+  for (let x = 0; x < W; x++) for (let z = 0; z < D; z++) {
+    for (let y = 1; y < 8; y++) {
+      if (getBlock(x, y, z) === 3 && Math.random() < 0.08) {
+        let r = Math.random();
+        let ore = r < 0.4 ? 8 : r < 0.7 ? 9 : r < 0.9 ? 10 : 11;
+        setBlock(x, y, z, ore);
+      }
+    }
+  }
+  // Água
+  for (let x = 0; x < W; x++) for (let z = 0; z < D; z++) {
+    if (getBlock(x, 0, z) === 0) setBlock(x, 0, z, 7);
+  }
+}
+
+function plantTree(x, gy, z) {
+  let th = 4 + Math.floor(Math.random() * 3);
+  for (let y = gy; y < gy + th; y++) setBlock(x, y, z, 4);
+  let top = gy + th;
+  for (let dx = -2; dx <= 2; dx++) for (let dz = -2; dz <= 2; dz++) for (let dy = -1; dy <= 2; dy++) {
+    if (Math.abs(dx) + Math.abs(dz) + Math.abs(dy) < 4) {
+      if (getBlock(x + dx, top + dy, z + dz) === 0)
+        setBlock(x + dx, top + dy, z + dz, 5);
+    }
+  }
+}
+
+// ─── THREE.JS ─────────────────────────────────────────────────────
+let scene, camera, renderer, raycaster;
+let yawObj, pitchObj;
+let canvas = document.getElementById('gameCanvas');
+
+function initScene() {
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x87ceeb);
+  scene.fog = new THREE.Fog(0x87ceeb, 25, 65);
+
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+  let ambient = new THREE.AmbientLight(0xffffff, 0.65);
+  scene.add(ambient);
+  let sun = new THREE.DirectionalLight(0xffffff, 0.85);
+  sun.position.set(15, 30, 10);
+  scene.add(sun);
+
+  raycaster = new THREE.Raycaster();
+  raycaster.far = 8;
+
+  yawObj = new THREE.Object3D();
+  pitchObj = new THREE.Object3D();
+  yawObj.add(pitchObj);
+  pitchObj.add(camera);
+  scene.add(yawObj);
+}
+
+function buildMesh(x, y, z) {
+  let key = `${x},${y},${z}`;
+  if (meshes.has(key)) { scene.remove(meshes.get(key)); meshes.delete(key); }
+  let bid = getBlock(x, y, z);
+  if (bid === 0) return;
+  let bdata = BLOCK_LIST.find(b => b.id === bid);
+  if (!bdata) return;
+
+  let mat = new THREE.MeshLambertMaterial({
+    color: bdata.color,
+    transparent: !!bdata.transparent,
+    opacity: bdata.transparent ? 0.55 : 1
+  });
+  let geo = new THREE.BoxGeometry(1, 1, 1);
+
+  let mesh;
+  if (bdata.id === 1 && bdata.side) {
+    let sideMat = new THREE.MeshLambertMaterial({ color: bdata.side });
+    mesh = new THREE.Mesh(geo, [sideMat, sideMat, mat, sideMat, sideMat, sideMat]);
+  } else {
+    mesh = new THREE.Mesh(geo, mat);
+  }
+  mesh.position.set(x, y, z);
+  scene.add(mesh);
+  meshes.set(key, mesh);
+}
+
+function rebuildAll() {
+  meshes.forEach(m => scene.remove(m));
+  meshes.clear();
+  let dirs = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+  for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) for (let z = 0; z < D; z++) {
+    if (getBlock(x, y, z) !== 0) {
+      let exposed = dirs.some(([dx,dy,dz]) => {
+        let nb = getBlock(x+dx, y+dy, z+dz);
+        let nbd = BLOCK_LIST.find(b => b.id === nb);
+        return nb === 0 || (nbd && nbd.transparent);
+      });
+      if (exposed) buildMesh(x, y, z);
+    }
+  }
+}
+
+function rebuildNear(x, y, z) {
+  for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) for (let dz = -1; dz <= 1; dz++) {
+    let nx = x+dx, ny = y+dy, nz = z+dz;
+    if (nx<0||nx>=W||ny<0||ny>=H||nz<0||nz>=D) continue;
+    let key = `${nx},${ny},${nz}`;
+    if (meshes.has(key)) { scene.remove(meshes.get(key)); meshes.delete(key); }
+    if (getBlock(nx, ny, nz) !== 0) {
+      let dirs = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+      let exposed = dirs.some(([ddx,ddy,ddz]) => {
+        let nb = getBlock(nx+ddx, ny+ddy, nz+ddz);
+        let nbd = BLOCK_LIST.find(b => b.id === nb);
+        return nb === 0 || (nbd && nbd.transparent);
+      });
+      if (exposed) buildMesh(nx, ny, nz);
+    }
+  }
+}
+
+// ─── ESTADO DO JOGO ───────────────────────────────────────────────
+let gameMode = 'survival';
+let health = 10, hunger = 10, hungerTimer = 0, dead = false;
+let selectedSlot = 0;
+let hotbar = [3, 2, 1, 4, 5, 6, 8, 9];
+let pointerLocked = false;
+let moveF=false, moveB=false, moveL=false, moveR=false;
+let yVel = 0, onGround = false;
+let dayTime = 0;
+let animId = null, lastTime = 0;
+
+function getTopY(x, z) {
+  for (let y = H - 1; y >= 0; y--) { if (getBlock(x, y, z) !== 0) return y + 1; }
+  return 10;
+}
+
+function startGame(mode) {
+  gameMode = mode;
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('mode-info').textContent = 'Modo: ' + (mode === 'survival' ? 'Sobrevivência' : 'Criativo');
+  health = 10; hunger = 10; dead = false; hungerTimer = 0;
+  let tx = Math.floor(W/2), tz = Math.floor(D/2);
+  yawObj.position.set(tx, getTopY(tx, tz) + 1.8, tz);
+  yVel = 0;
+  updateHUD();
+  buildHotbar();
+  buildCreativePanel();
+  canvas.requestPointerLock();
+  if (animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+// ─── HUD ──────────────────────────────────────────────────────────
+function buildHotbar() {
+  let el = document.getElementById('hotbar');
+  el.innerHTML = '';
+  hotbar.forEach((bid, i) => {
+    let bdata = BLOCK_LIST.find(b => b.id === bid) || { name: '?', emoji: '❓' };
+    let d = document.createElement('div');
+    d.className = 'slot' + (i === selectedSlot ? ' active' : '');
+    d.innerHTML = `<span class="icon">${bdata.emoji || '⬜'}</span><span class="label">${bdata.name}</span>`;
+    d.onclick = () => { selectedSlot = i; buildHotbar(); };
+    el.appendChild(d);
+  });
+  let bdata = BLOCK_LIST.find(b => b.id === hotbar[selectedSlot]);
+  document.getElementById('block-info').textContent = 'Bloco: ' + (bdata ? bdata.name : '?');
+}
+
+function buildCreativePanel() {
+  let g = document.getElementById('block-grid');
+  g.innerHTML = '';
+  BLOCK_LIST.forEach(b => {
+    let d = document.createElement('div');
+    d.className = 'block-opt';
+    let hex = (b.color || 0x444444).toString(16).padStart(6, '0');
+    d.style.background = '#' + hex + '33';
+    d.innerHTML = `<span class="icon">${b.emoji || '⬜'}</span><span>${b.name}</span>`;
+    d.onclick = () => { hotbar[selectedSlot] = b.id; buildHotbar(); };
+    g.appendChild(d);
+  });
+}
+
+function togglePanel() {
+  let p = document.getElementById('creative-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+function updateHUD() {
+  let hh = '';
+  for (let i = 0; i < 10; i++) hh += (i < health ? '❤️' : '🖤');
+  document.getElementById('health').innerHTML = hh;
+  let hng = '';
+  for (let i = 0; i < 10; i++) hng += (i < hunger ? '🍗' : '▫️');
+  document.getElementById('hunger').innerHTML = hng;
+  if (gameMode === 'creative') {
+    document.getElementById('health').style.display = 'none';
+    document.getElementById('hunger').style.display = 'none';
+  } else {
+    document.getElementById('health').style.display = 'flex';
+    document.getElementById('hunger').style.display = 'flex';
+  }
+}
+
+// ─── LOOP DO JOGO ─────────────────────────────────────────────────
+function loop(t = 0) {
+  animId = requestAnimationFrame(loop);
+  let dt = Math.min((t - lastTime) / 1000, 0.1);
+  lastTime = t;
+  if (!dead) update(dt);
+  renderer.render(scene, camera);
+}
+
+function update(dt) {
+  if (!pointerLocked) return;
+  let spd = gameMode === 'creative' ? 10 : 5;
+  let sy = Math.sin(yawObj.rotation.y), cy = Math.cos(yawObj.rotation.y);
+  let fwdX = -sy, fwdZ = -cy;
+  let rgtX =  cy, rgtZ = -sy;
+  let dx = 0, dz = 0;
+  if (moveF) { dx += fwdX * spd * dt; dz += fwdZ * spd * dt; }
+  if (moveB) { dx -= fwdX * spd * dt; dz -= fwdZ * spd * dt; }
+  if (moveL) { dx -= rgtX * spd * dt; dz -= rgtZ * spd * dt; }
+  if (moveR) { dx += rgtX * spd * dt; dz += rgtZ * spd * dt; }
+
+  if (gameMode === 'creative') {
+    yawObj.position.x += dx;
+    yawObj.position.z += dz;
+  } else {
+    yVel -= 20 * dt;
+    let nx = yawObj.position.x + dx, nz = yawObj.position.z + dz;
+    if (!isBlocked(nx, yawObj.position.y - 0.1, nz)) {
+      yawObj.position.x = nx;
+      yawObj.position.z = nz;
+    }
+    let newY = yawObj.position.y + yVel * dt;
+    if (yVel < 0 && isBlocked(yawObj.position.x, newY - 0.95, yawObj.position.z)) {
+      yVel = 0; onGround = true;
+      yawObj.position.y = Math.floor(yawObj.position.y - 0.95) + 1.95;
+    } else if (yVel > 0 && isBlocked(yawObj.position.x, newY + 0.1, yawObj.position.z)) {
+      yVel = 0; yawObj.position.y = newY;
+    } else {
+      yawObj.position.y = newY; onGround = false;
+    }
+    if (yawObj.position.y < -5) { health = 0; updateHUD(); die(); return; }
+
+    hungerTimer += dt;
+    if (hungerTimer > 30) {
+      hungerTimer = 0;
+      if (hunger > 0) { hunger--; updateHUD(); }
+    }
+    if (hunger === 0) {
+      health = Math.max(0, health - dt * 0.5 | 0);
+      updateHUD();
+      if (health <= 0) { die(); return; }
+    }
+  }
+
+  // Dia/noite
+  dayTime += dt * 0.015;
+  let bright = 0.5 + 0.5 * Math.sin(dayTime);
+  scene.background.setRGB(0.53 * bright, 0.81 * bright, 0.92 * bright);
+
+  // Info
+  let px = Math.floor(yawObj.position.x), py = Math.floor(yawObj.position.y), pz = Math.floor(yawObj.position.z);
+  document.getElementById('pos-info').textContent = `Pos: ${px}, ${py}, ${pz}`;
+}
+
+function isBlocked(x, y, z) {
+  let bx = Math.round(x), by = Math.round(y), bz = Math.round(z);
+  let b = getBlock(bx, by, bz);
+  let bd = BLOCK_LIST.find(d => d.id === b);
+  return b !== 0 && !(bd && bd.transparent);
+}
+
+function die() {
+  dead = true;
+  document.getElementById('msg').style.display = 'block';
+  document.getElementById('msg-title').textContent = '💀 Morreste!';
+  document.getElementById('msg-body').textContent = 'A tua vida chegou a zero.';
+}
+
+function respawn() {
+  dead = false; health = 10; hunger = 10; hungerTimer = 0;
+  let tx = Math.floor(W/2), tz = Math.floor(D/2);
+  yawObj.position.set(tx, getTopY(tx, tz) + 1.8, tz);
+  yVel = 0;
+  document.getElementById('msg').style.display = 'none';
+  updateHUD();
+}
+
+// ─── RAYCASTING ───────────────────────────────────────────────────
+function getRayHit() {
+  raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+  let targets = [];
+  meshes.forEach(m => targets.push(m));
+  let hits = raycaster.intersectObjects(targets);
+  return hits.length ? hits[0] : null;
+}
+
+function placeBlock() {
+  let hit = getRayHit();
+  if (!hit) return;
+  let n = hit.face.normal;
+  let p = hit.object.position;
+  let nx = Math.round(p.x + n.x), ny = Math.round(p.y + n.y), nz = Math.round(p.z + n.z);
+  if (nx < 0 || nx >= W || ny < 0 || ny >= H || nz < 0 || nz >= D) return;
+  let bid = hotbar[selectedSlot];
+  if (!bid) return;
+  setBlock(nx, ny, nz, bid);
+  rebuildNear(nx, ny, nz);
+  if (gameMode === 'survival' && hunger < 10) { hunger = Math.min(10, hunger + 1); updateHUD(); }
+}
+
+function breakBlock() {
+  let hit = getRayHit();
+  if (!hit) return;
+  let p = hit.object.position;
+  let bx = Math.round(p.x), by = Math.round(p.y), bz = Math.round(p.z);
+  let bid = getBlock(bx, by, bz);
+  setBlock(bx, by, bz, 0);
+  rebuildNear(bx, by, bz);
+  if (gameMode === 'survival') {
+    if ([8,9,10,11].includes(bid)) { health = Math.min(10, health + 1); updateHUD(); }
+  }
+}
+
+// ─── CONTROLOS ────────────────────────────────────────────────────
+document.addEventListener('pointerlockchange', () => {
+  pointerLocked = document.pointerLockElement === canvas;
+  document.getElementById('paused').style.display = pointerLocked ? 'none' : (document.getElementById('overlay').style.display === 'none' && !dead ? 'block' : 'none');
+});
+
+canvas.addEventListener('click', () => {
+  if (!pointerLocked && !dead && document.getElementById('overlay').style.display === 'none') {
+    canvas.requestPointerLock();
+  }
+});
+
+document.addEventListener('mousemove', e => {
+  if (!pointerLocked) return;
+  yawObj.rotation.y -= e.movementX * 0.002;
+  pitchObj.rotation.x -= e.movementY * 0.002;
+  pitchObj.rotation.x = Math.max(-Math.PI/2 + 0.05, Math.min(Math.PI/2 - 0.05, pitchObj.rotation.x));
+});
+
+document.addEventListener('mousedown', e => {
+  if (!pointerLocked) return;
+  if (e.button === 0) breakBlock();
+  if (e.button === 2) placeBlock();
+});
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'KeyW') moveF = true;
+  if (e.code === 'KeyS') moveB = true;
+  if (e.code === 'KeyA') moveL = true;
+  if (e.code === 'KeyD') moveR = true;
+  if (e.code === 'Space') {
+    e.preventDefault();
+    if (gameMode === 'creative') yawObj.position.y += 0.4;
+    else if (onGround) { yVel = 8; onGround = false; }
+  }
+  if (e.code === 'ShiftLeft' && gameMode === 'creative') yawObj.position.y -= 0.4;
+  if (e.code === 'KeyE') togglePanel();
+  if (e.code === 'KeyF' && gameMode === 'survival') {
+    if (hunger < 10) { hunger = Math.min(10, hunger + 3); updateHUD(); }
+  }
+  if (e.key >= '1' && e.key <= '8') {
+    selectedSlot = parseInt(e.key) - 1;
+    buildHotbar();
+  }
+  if (e.code === 'Escape') {
+    if (pointerLocked) document.exitPointerLock();
+  }
+});
+
+document.addEventListener('keyup', e => {
+  if (e.code === 'KeyW') moveF = false;
+  if (e.code === 'KeyS') moveB = false;
+  if (e.code === 'KeyA') moveL = false;
+  if (e.code === 'KeyD') moveR = false;
+});
+
+document.addEventListener('wheel', e => {
+  selectedSlot = (selectedSlot + (e.deltaY > 0 ? 1 : -1) + hotbar.length) % hotbar.length;
+  buildHotbar();
+});
+
+window.addEventListener('resize', () => {
+  if (!renderer) return;
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+// ─── INICIALIZAÇÃO ────────────────────────────────────────────────
+generateWorld();
+initScene();
+rebuildAll();
+</script>
+</body>
+</html>
