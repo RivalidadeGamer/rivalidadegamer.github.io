@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARKOS 98 — Não abras isto</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Creepster&family=VT323&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --desktop: #0d0d0d;
+    --win-bg: #1a0a0a;
+    --win-border: #3d0000;
+    --win-title: #2a0000;
+    --win-title-active: #5c0000;
+    --text: #cc0000;
+    --text-dim: #660000;
+    --text-bright: #ff2222;
+    --text-white: #dddddd;
+    --taskbar: #0f0000;
+    --btn: #1a0000;
+    --btn-hover: #2a0000;
+    --btn-border: #440000;
+    --accent: #ff0000;
+    --green: #00ff41;
+    --blood: #8b0000;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+  body {
+    background: var(--desktop);
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M0 0 L0 12 L4 9 L6 14 L8 13 L6 8 L10 8 Z' fill='%23cc0000' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E"), auto;
+  }
+
+  /* SCANLINES */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* FLICKER */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(200,0,0,0.02);
+    pointer-events: none;
+    z-index: 9998;
+    animation: flicker 8s infinite;
+  }
+
+  @keyframes flicker {
+    0%,95%,100% { opacity: 1; }
+    96% { opacity: 0.7; }
+    97% { opacity: 1; }
+    98% { opacity: 0.5; }
+    99% { opacity: 1; }
+  }
+
+  /* DESKTOP */
+  #desktop {
+    position: fixed;
+    inset: 0;
+    bottom: 40px;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(80,0,0,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(60,0,0,0.2) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%230d0a0a'/%3E%3Crect width='1' height='1' fill='%23110808' x='0' y='0'/%3E%3Crect width='1' height='1' fill='%23110808' x='2' y='2'/%3E%3C/svg%3E");
+    overflow: hidden;
+  }
+
+  /* BLOOD DRIPS on desktop */
+  .drip {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #8b0000, #cc000088, transparent);
+    animation: drip-fall linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes drip-fall {
+    0% { height: 0; top: 0; opacity: 1; }
+    80% { opacity: 0.8; }
+    100% { height: 120px; top: -30px; opacity: 0; }
+  }
+
+  /* DESKTOP ICONS */
+  .desktop-icon {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    width: 70px;
+    transition: all 0.1s;
+  }
+
+  .desktop-icon:hover { background: rgba(139,0,0,0.3); border-color: var(--blood); }
+  .desktop-icon:active { background: rgba(139,0,0,0.5); }
+
+  .icon-img {
+    font-size: 32px;
+    filter: drop-shadow(0 0 6px rgba(255,0,0,0.5));
+    line-height: 1;
+  }
+
+  .icon-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-white);
+    text-align: center;
+    text-shadow: 0 0 8px rgba(255,0,0,0.8), 1px 1px 0 #000;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  /* TASKBAR */
+  #taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, #1a0000, #0a0000);
+    border-top: 2px solid #3d0000;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+    z-index: 5000;
+  }
+
+  #start-btn {
+    background: linear-gradient(to bottom, #3d0000, #1a0000);
+    border: 2px outset #5c0000;
+    color: #ff4444;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 2px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #ff0000;
+    animation: pulse-btn 3s infinite;
+  }
+
+  @keyframes pulse-btn {
+    0%,100% { box-shadow: none; }
+    50% { box-shadow: 0 0 10px rgba(255,0,0,0.4); }
+  }
+
+  #start-btn:active { border-style: inset; }
+
+  .taskbar-sep {
+    width: 2px;
+    height: 28px;
+    background: linear-gradient(to bottom, transparent, #3d0000, transparent);
+  }
+
+  .taskbar-task {
+    background: linear-gradient(to bottom, #1a0000, #0d0000);
+    border: 2px outset #3d0000;
+    color: #cc0000;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    cursor: pointer;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .taskbar-task:hover { background: linear-gradient(to bottom, #2a0000, #1a0000); }
+  .taskbar-task.active { border-style: inset; background: #0d0000; }
+
+  #clock {
+    margin-left: auto;
+    background: linear-gradient(to bottom, #0d0000, #1a0000);
+    border: 2px inset #3d0000;
+    color: #cc0000;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 2px 8px;
+    text-shadow: 0 0 6px #ff0000;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  /* START MENU */
+  #start-menu {
+    display: none;
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    width: 220px;
+    background: linear-gradient(to bottom, #1a0000, #0d0000);
+    border: 2px outset #5c0000;
+    z-index: 6000;
+    flex-direction: column;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.8);
+  }
+
+  #start-menu.open { display: flex; }
+
+  .start-banner {
+    background: linear-gradient(to bottom, #3d0000, #1a0000);
+    padding: 8px 12px;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: #ff2222;
+    text-shadow: 0 0 10px #ff0000;
+    border-bottom: 1px solid #5c0000;
+    letter-spacing: 2px;
+  }
+
+  .start-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    color: #cc9999;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #1a0000;
+    transition: all 0.1s;
+  }
+
+  .start-item:hover {
+    background: #3d0000;
+    color: #fff;
+  }
+
+  .start-item .si-icon { font-size: 18px; }
+
+  /* WINDOWS */
+  .window {
+    position: absolute;
+    min-width: 300px;
+    min-height: 200px;
+    background: var(--win-bg);
+    border: 2px outset #5c0000;
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.9), 0 0 40px rgba(139,0,0,0.1);
+    display: none;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .window.visible { display: flex; }
+  .window.focused { z-index: 200; border-color: #880000; }
+
+  .win-titlebar {
+    background: linear-gradient(to right, #2a0000, #4d0000, #2a0000);
+    display: flex;
+    align-items: center;
+    padding: 3px 4px;
+    gap: 4px;
+    cursor: move;
+    border-bottom: 1px solid #3d0000;
+    min-height: 26px;
+  }
+
+  .window.focused .win-titlebar {
+    background: linear-gradient(to right, #4d0000, #7a0000, #4d0000);
+  }
+
+  .win-icon { font-size: 14px; margin-right: 2px; }
+
+  .win-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #ffaaaa;
+    flex: 1;
+    text-shadow: 0 0 6px rgba(255,0,0,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .win-controls { display: flex; gap: 2px; }
+
+  .win-btn {
+    width: 18px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px outset #5c0000;
+    background: linear-gradient(to bottom, #2a0000, #1a0000);
+    color: #cc6666;
+    font-family: monospace;
+    line-height: 1;
+  }
+
+  .win-btn:hover { background: linear-gradient(to bottom, #4d0000, #2a0000); color: #ff9999; }
+  .win-btn:active { border-style: inset; }
+  .win-btn.close:hover { background: #6d0000; color: #fff; }
+
+  .win-body {
+    flex: 1;
+    overflow: auto;
+    color: var(--text-white);
+    font-size: 12px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .win-body::-webkit-scrollbar { width: 14px; }
+  .win-body::-webkit-scrollbar-track { background: #0d0000; }
+  .win-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #3d0000, #1a0000);
+    border: 1px outset #5c0000;
+  }
+
+  .win-menubar {
+    background: linear-gradient(to bottom, #1a0000, #0d0000);
+    border-bottom: 1px solid #2a0000;
+    display: flex;
+    padding: 1px 2px;
+  }
+
+  .win-menu-item {
+    padding: 1px 8px;
+    font-size: 11px;
+    color: #cc9999;
+    cursor: pointer;
+  }
+
+  .win-menu-item:hover { background: #3d0000; color: #fff; }
+
+  /* NOTEPAD */
+  #notepad-content {
+    padding: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #notepad-textarea {
+    flex: 1;
+    width: 100%;
+    background: #0a0000;
+    border: 2px inset #3d0000;
+    color: #cccccc;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 8px;
+    resize: none;
+    outline: none;
+    line-height: 1.6;
+    min-height: 200px;
+  }
+
+  #notepad-textarea:focus { border-color: #660000; box-shadow: inset 0 0 10px rgba(139,0,0,0.3); }
+
+  /* FILE EXPLORER */
+  .file-list { padding: 8px; }
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    margin: 1px 0;
+  }
+  .file-item:hover { background: #2a0000; border-color: #5c0000; }
+  .file-item.selected { background: #3d0000; border-color: #880000; }
+  .file-icon { font-size: 16px; }
+  .file-name { font-size: 12px; color: #ccaaaa; }
+  .file-info { margin-left: auto; font-size: 10px; color: #660000; }
+
+  /* PASSWORD SCREEN */
+  .password-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+  }
+
+  .password-overlay.hidden { display: none; }
+
+  .pw-title {
+    font-family: 'Creepster', cursive;
+    font-size: 24px;
+    color: #ff0000;
+    text-shadow: 0 0 20px #ff0000;
+    letter-spacing: 3px;
+    text-align: center;
+  }
+
+  .pw-input {
+    background: #0a0000;
+    border: 2px inset #5c0000;
+    color: #ff4444;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    padding: 6px 12px;
+    outline: none;
+    text-align: center;
+    letter-spacing: 4px;
+    width: 200px;
+  }
+
+  .pw-input:focus { box-shadow: 0 0 12px rgba(255,0,0,0.4); }
+
+  .pw-btn {
+    background: linear-gradient(to bottom, #3d0000, #1a0000);
+    border: 2px outset #5c0000;
+    color: #ff6666;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 4px 20px;
+    cursor: pointer;
+  }
+
+  .pw-btn:hover { background: linear-gradient(to bottom, #5c0000, #2a0000); }
+  .pw-btn:active { border-style: inset; }
+
+  .pw-hint { font-size: 10px; color: #440000; font-style: italic; }
+  .pw-error { font-size: 11px; color: #ff0000; animation: shake 0.3s; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* CHAT LOG */
+  .chat-log {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+
+  .msg {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 85%;
+  }
+
+  .msg.me { align-self: flex-end; }
+  .msg.them { align-self: flex-start; }
+
+  .msg-name {
+    font-size: 10px;
+    color: #660000;
+  }
+
+  .msg-bubble {
+    padding: 6px 10px;
+    border-radius: 2px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .msg.me .msg-bubble {
+    background: #1a0000;
+    border: 1px solid #3d0000;
+    color: #cc9999;
+  }
+
+  .msg.them .msg-bubble {
+    background: #0d0a00;
+    border: 1px solid #2a1a00;
+    color: #ccbb99;
+  }
+
+  .msg.sys .msg-bubble {
+    background: #000;
+    border: 1px solid #2a0000;
+    color: #660000;
+    font-style: italic;
+    align-self: center;
+    font-size: 10px;
+  }
+
+  .msg-time { font-size: 9px; color: #330000; }
+
+  /* MEDIA PLAYER */
+  .media-player { padding: 10px; }
+  .media-display {
+    background: #000;
+    border: 2px inset #3d0000;
+    padding: 20px;
+    text-align: center;
+    color: #ff0000;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    text-shadow: 0 0 10px #ff0000;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .media-display::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,0,0,0.03) 3px, rgba(255,0,0,0.03) 4px);
+    pointer-events: none;
+  }
+
+  .track-list { list-style: none; }
+  .track-item {
+    padding: 4px 8px;
+    display: flex;
+    gap: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #1a0000;
+    font-size: 11px;
+    color: #cc9999;
+  }
+  .track-item:hover { background: #1a0000; color: #fff; }
+  .track-item.playing { color: #ff4444; background: #0d0000; }
+  .track-num { color: #440000; width: 16px; }
+
+  .media-controls {
+    display: flex;
+    gap: 4px;
+    margin-top: 10px;
+    justify-content: center;
+  }
+
+  .media-btn {
+    background: linear-gradient(to bottom, #2a0000, #1a0000);
+    border: 2px outset #5c0000;
+    color: #cc6666;
+    font-size: 14px;
+    width: 32px;
+    height: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .media-btn:hover { background: linear-gradient(to bottom, #3d0000, #2a0000); }
+  .media-btn:active { border-style: inset; }
+
+  /* PHOTO VIEWER */
+  .photo-viewer {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .photo-display {
+    background: #000;
+    border: 2px inset #3d0000;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-ascii {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 7px;
+    color: #660000;
+    line-height: 0.9;
+    text-align: center;
+    white-space: pre;
+    letter-spacing: 1px;
+  }
+
+  .photo-thumb-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+  }
+
+  .photo-thumb {
+    width: 60px;
+    height: 50px;
+    background: #0d0000;
+    border: 2px solid #2a0000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .photo-thumb:hover { border-color: #880000; }
+  .photo-thumb.selected { border-color: #cc0000; }
+
+  /* ERROR / BSOD */
+  #bsod {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000088;
+    color: #fff;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    z-index: 99999;
+    padding: 40px;
+    overflow: hidden;
+  }
+
+  #bsod.show { display: block; }
+
+  /* GLITCH EFFECT */
+  .glitch {
+    animation: glitch 4s infinite;
+    display: inline-block;
+  }
+
+  @keyframes glitch {
+    0%,95%,100% { transform: none; text-shadow: none; }
+    96% { transform: skewX(-10deg); text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+    97% { transform: skewX(5deg); }
+    98% { transform: none; text-shadow: -1px 0 #ff0000; }
+  }
+
+  /* DIALOG */
+  .dialog-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 8000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dialog-overlay.show { display: flex; }
+
+  .dialog-box {
+    background: var(--win-bg);
+    border: 2px outset #5c0000;
+    padding: 16px;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.9);
+  }
+
+  .dialog-title {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: #ff4444;
+    text-shadow: 0 0 8px #ff0000;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #3d0000;
+    padding-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dialog-body {
+    color: #ccaaaa;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  .dialog-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .dialog-btn {
+    background: linear-gradient(to bottom, #2a0000, #1a0000);
+    border: 2px outset #5c0000;
+    color: #cc9999;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 3px 16px;
+    cursor: pointer;
+  }
+
+  .dialog-btn:hover { background: linear-gradient(to bottom, #3d0000, #2a0000); }
+  .dialog-btn:active { border-style: inset; }
+
+  /* TERMINAL */
+  .terminal-body {
+    padding: 10px;
+    background: #000;
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    height: 100%;
+    overflow-y: auto;
+    line-height: 1.6;
+  }
+
+  .term-line { margin-bottom: 2px; }
+  .term-prompt { color: #ff4444; }
+  .term-input-line { display: flex; align-items: center; gap: 4px; margin-top: 4px; }
+  .term-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--green);
+    animation: blink 1s infinite;
+    vertical-align: text-bottom;
+  }
+
+  @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+
+  #term-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    flex: 1;
+    caret-color: var(--green);
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar-container {
+    background: #000;
+    border: 2px inset #3d0000;
+    height: 16px;
+    margin: 8px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      #3d0000 0px, #5c0000 10px, #3d0000 20px
+    );
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* CONTEXT MENU */
+  #context-menu {
+    display: none;
+    position: fixed;
+    background: linear-gradient(to bottom, #1a0000, #0d0000);
+    border: 2px outset #5c0000;
+    z-index: 7000;
+    min-width: 160px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.8);
+  }
+
+  #context-menu.show { display: block; }
+
+  .ctx-item {
+    padding: 4px 16px;
+    font-size: 11px;
+    color: #cc9999;
+    cursor: pointer;
+    border-bottom: 1px solid #1a0000;
+  }
+
+  .ctx-item:hover { background: #3d0000; color: #fff; }
+  .ctx-sep { height: 1px; background: #2a0000; margin: 2px 0; }
+
+  /* WALLPAPER BLOOD TEXT */
+  #desktop-text {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'Creepster', cursive;
+    font-size: 13px;
+    color: rgba(100,0,0,0.4);
+    text-align: right;
+    line-height: 1.8;
+    pointer-events: none;
+    text-shadow: 0 0 20px rgba(100,0,0,0.3);
+  }
+
+  /* Boot screen */
+  #boot-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    font-family: 'VT323', monospace;
+  }
+
+  .boot-logo {
+    font-family: 'Creepster', cursive;
+    font-size: 64px;
+    color: #cc0000;
+    text-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255,0,0,0.3);
+    letter-spacing: 8px;
+    animation: logo-pulse 2s ease-in-out;
+    margin-bottom: 20px;
+  }
+
+  @keyframes logo-pulse {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .boot-sub {
+    color: #660000;
+    font-size: 18px;
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+  }
+
+  .boot-progress-wrap {
+    width: 300px;
+    margin-bottom: 20px;
+  }
+
+  .boot-bar {
+    background: #0a0000;
+    border: 2px inset #3d0000;
+    height: 20px;
+    overflow: hidden;
+  }
+
+  .boot-fill {
+    height: 100%;
+    background: linear-gradient(to right, #3d0000, #cc0000, #3d0000);
+    background-size: 200%;
+    animation: boot-animate 0.1s linear;
+    width: 0%;
+  }
+
+  .boot-msg {
+    font-size: 14px;
+    color: #440000;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 8px;
+    min-height: 20px;
+  }
+
+  .boot-warning {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #2a0000;
+    text-align: center;
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+  /* Smooth window resize handle */
+  .win-resize {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    cursor: se-resize;
+    background: linear-gradient(135deg, transparent 50%, #3d0000 50%);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- BOOT SCREEN -->
+<div id="boot-screen">
+  <div class="boot-logo glitch">DARKOS</div>
+  <div class="boot-sub">versão 98 · SISTEMA CORROMPIDO</div>
+  <div class="boot-progress-wrap">
+    <div class="boot-bar"><div class="boot-fill" id="boot-fill"></div></div>
+    <div class="boot-msg" id="boot-msg">Inicializando...</div>
+  </div>
+  <div class="boot-warning">⚠ AVISO: Este sistema pertenceu a Tomás, Diogo e Rui.<br>
+  Os seus ficheiros foram encontrados intactos.<br>
+  O paradeiro dos utilizadores é <span style="color:#660000">desconhecido</span>.</div>
+</div>
+
+<!-- BSOD -->
+<div id="bsod">
+  <div style="background:#aaa;color:#000088;padding:4px 8px;margin-bottom:20px;font-size:22px;">Erro Fatal do Sistema</div>
+  <div style="margin-bottom:30px;color:#fff;font-size:18px;line-height:1.6;">
+    DARKOS detetou um problema e foi encerrado para proteger o teu computador.<br><br>
+    Isto pode ser causado por:<br><br>
+    &nbsp;&nbsp;&nbsp;SABE_O_QUE_ENCONTRASTE<br>
+    &nbsp;&nbsp;&nbsp;FUGA_DE_MEMORIA_PESSOAL<br>
+    &nbsp;&nbsp;&nbsp;ARQUIVO_PROIBIDO_ACEDIDO<br>
+  </div>
+  <div style="color:#aaa;font-size:16px;">
+    * Pressiona qualquer tecla para continuar (não recomendado)<br><br>
+    Se este ecrã aparecer novamente, eles também podem ver-te.
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop">
+  <!-- Blood drips generated by JS -->
+
+  <div class="desktop-icon" style="top:20px;left:20px" ondblclick="openWindow('files')">
+    <div class="icon-img">📁</div>
+    <div class="icon-label">Ficheiros Pessoais</div>
+  </div>
+
+  <div class="desktop-icon" style="top:110px;left:20px" ondblclick="openWindow('notepad')">
+    <div class="icon-img">📝</div>
+    <div class="icon-label">Bloco de Notas</div>
+  </div>
+
+  <div class="desktop-icon" style="top:200px;left:20px" ondblclick="openWindow('chat')">
+    <div class="icon-img">💬</div>
+    <div class="icon-label">DarkMessenger</div>
+  </div>
+
+  <div class="desktop-icon" style="top:290px;left:20px" ondblclick="openWindow('media')">
+    <div class="icon-img">🎵</div>
+    <div class="icon-label">Media Player</div>
+  </div>
+
+  <div class="desktop-icon" style="top:380px;left:20px" ondblclick="openWindow('photos')">
+    <div class="icon-img">🖼️</div>
+    <div class="icon-label">Fotos</div>
+  </div>
+
+  <div class="desktop-icon" style="top:20px;left:110px" ondblclick="openWindow('terminal')">
+    <div class="icon-img">💻</div>
+    <div class="icon-label">Terminal</div>
+  </div>
+
+  <div class="desktop-icon" style="top:110px;left:110px" ondblclick="openWindow('locked')">
+    <div class="icon-img">🔒</div>
+    <div class="icon-label">ARQUIVO_TRANCADO</div>
+  </div>
+
+  <div class="desktop-icon" style="top:200px;left:110px" ondblclick="triggerBSOD()">
+    <div class="icon-img">⚠️</div>
+    <div class="icon-label">NÃO ABRIR</div>
+  </div>
+
+  <div id="desktop-text">
+    Este computador pertenceu a<br>
+    Tomás · Diogo · Rui<br>
+    Última sessão: 13/10/2003<br>
+    <span style="color:rgba(60,0,0,0.5)">Nenhum regressou.</span>
+  </div>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <button id="start-btn" onclick="toggleStartMenu()">☠ INICIO</button>
+  <div class="taskbar-sep"></div>
+  <div id="taskbar-tasks"></div>
+  <div id="clock">00:00</div>
+</div>
+
+<!-- START MENU -->
+<div id="start-menu">
+  <div class="start-banner">☠ DARKOS 98</div>
+  <div class="start-item" onclick="openWindow('files');closeStart()"><span class="si-icon">📁</span>Ficheiros</div>
+  <div class="start-item" onclick="openWindow('notepad');closeStart()"><span class="si-icon">📝</span>Bloco de Notas</div>
+  <div class="start-item" onclick="openWindow('chat');closeStart()"><span class="si-icon">💬</span>DarkMessenger</div>
+  <div class="start-item" onclick="openWindow('media');closeStart()"><span class="si-icon">🎵</span>Media Player</div>
+  <div class="start-item" onclick="openWindow('photos');closeStart()"><span class="si-icon">🖼️</span>Fotos</div>
+  <div class="start-item" onclick="openWindow('terminal');closeStart()"><span class="si-icon">💻</span>Terminal</div>
+  <div class="start-item" onclick="openWindow('locked');closeStart()"><span class="si-icon">🔒</span>Arquivo Trancado</div>
+  <div class="start-item" style="border-top:1px solid #3d0000;margin-top:4px" onclick="triggerBSOD()"><span class="si-icon">⚠️</span>Desligar</div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div id="context-menu">
+  <div class="ctx-item" onclick="hideCtx()">Arranjar Ícones</div>
+  <div class="ctx-item" onclick="hideCtx()">Atualizar</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="openWindow('notepad');hideCtx()">Novo Documento</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" style="color:#660000" onclick="hideCtx()">Propriedades do Sistema</div>
+</div>
+
+<!-- ===== WINDOWS ===== -->
+
+<!-- NOTEPAD -->
+<div class="window" id="win-notepad" style="width:480px;height:360px;top:80px;left:200px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-notepad')">
+    <span class="win-icon">📝</span>
+    <span class="win-title">Bloco de Notas — diario_tomas.txt</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('notepad')">_</div>
+      <div class="win-btn" onclick="maximizeWindow('win-notepad')">□</div>
+      <div class="win-btn close" onclick="closeWindow('notepad')">✕</div>
+    </div>
+  </div>
+  <div class="win-menubar">
+    <span class="win-menu-item">Ficheiro</span>
+    <span class="win-menu-item">Editar</span>
+    <span class="win-menu-item">Ver</span>
+  </div>
+  <div class="win-body" style="padding:0">
+    <div id="notepad-content">
+      <textarea id="notepad-textarea">Diário de Tomás — Outubro de 2003
+
+Dia 1 — 09/10/2003
+Finalmente convenci o Diogo e o Rui a virem comigo à casa abandonada na estrada velha. Dizem que foi lá que desapareceu aquela família nos anos 80. O Diogo acha que é lenda. Eu não tenho tanta certeza.
+
+Dia 2 — 10/10/2003
+Encontrámos a casa. A porta estava aberta. O Rui queria ir embora mas o Diogo disse que era parvo. Entrámos. Cheirava a mofo e a qualquer coisa que não consigo descrever. Havia marcas nas paredes. Não eram letras. Não era nada que eu conhecesse.
+
+Dia 3 — 11/10/2003
+Voltámos de dia. As marcas nas paredes tinham mudado de sítio. Isso é impossível. O Rui tirou fotografias. Guardei-as na pasta "Fotos". Não as vejo há dois dias. Não consigo.
+
+Dia 4 — 12/10/2003
+O Diogo não atende o telefone desde ontem à noite. Fui à casa dele. A mãe disse que saiu e não voltou. A sua mochila estava na entrada. Com as chaves dentro.
+
+Dia 5 — 13/10/2003
+Tenho ouvido passos no andar de cima. Moro num apartamento térreo.
+
+O Rui enviou-me uma mensagem às 3:17 da manhã. Era apenas um ficheiro de áudio. Não me consigo lembrar do que ouvi.
+
+Só sei que agora sei onde está o Diogo.
+
+Não vou lá buscá-lo.</textarea>
+    </div>
+  </div>
+  <div class="win-resize" onmousedown="startResize(event,'win-notepad')"></div>
+</div>
+
+<!-- FILE EXPLORER -->
+<div class="window" id="win-files" style="width:500px;height:380px;top:60px;left:180px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-files')">
+    <span class="win-icon">📁</span>
+    <span class="win-title">Explorador — C:\Utilizadores\Tomás\Documentos</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('files')">_</div>
+      <div class="win-btn" onclick="maximizeWindow('win-files')">□</div>
+      <div class="win-btn close" onclick="closeWindow('files')">✕</div>
+    </div>
+  </div>
+  <div class="win-menubar">
+    <span class="win-menu-item">Ficheiro</span>
+    <span class="win-menu-item">Editar</span>
+    <span class="win-menu-item">Ver</span>
+    <span class="win-menu-item">Ir Para</span>
+    <span class="win-menu-item">Ferramentas</span>
+  </div>
+  <div class="win-body">
+    <div style="background:#0d0000;border-bottom:1px solid #2a0000;padding:4px 8px;font-size:10px;color:#440000">
+      📍 C:\Utilizadores\Tomás\Documentos
+    </div>
+    <div class="file-list" id="file-list">
+      <div class="file-item" ondblclick="openNotepad('diario')"><span class="file-icon">📄</span><span class="file-name">diario_tomas.txt</span><span class="file-info">4 KB · 13/10/2003</span></div>
+      <div class="file-item" ondblclick="openNotepad('carta')"><span class="file-icon">📄</span><span class="file-name">carta_para_mae.txt</span><span class="file-info">1 KB · 13/10/2003</span></div>
+      <div class="file-item" ondblclick="openNotepad('coordenadas')"><span class="file-icon">📄</span><span class="file-name">coordenadas.txt</span><span class="file-info">0 KB · 12/10/2003</span></div>
+      <div class="file-item" ondblclick="openWindow('photos')"><span class="file-icon">📁</span><span class="file-name">Fotos</span><span class="file-info">3 ficheiros</span></div>
+      <div class="file-item" ondblclick="openWindow('locked')"><span class="file-icon">🔒</span><span class="file-name">RUI_privado.enc</span><span class="file-info">CIFRADO</span></div>
+      <div class="file-item" ondblclick="openNotepad('audio')"><span class="file-icon">🎵</span><span class="file-name">mensagem_rui_317am.wav</span><span class="file-info">??? KB</span></div>
+      <div class="file-item" ondblclick="showDialog('apagado')"><span class="file-icon">🗑️</span><span class="file-name">[FICHEIRO APAGADO]</span><span class="file-info" style="color:#330000">RECUPERADO</span></div>
+    </div>
+  </div>
+  <div class="win-resize" onmousedown="startResize(event,'win-files')"></div>
+</div>
+
+<!-- CHAT -->
+<div class="window" id="win-chat" style="width:440px;height:460px;top:50px;left:220px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-chat')">
+    <span class="win-icon">💬</span>
+    <span class="win-title">DarkMessenger — Grupo: OS TRÊS</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('chat')">_</div>
+      <div class="win-btn" onclick="maximizeWindow('win-chat')">□</div>
+      <div class="win-btn close" onclick="closeWindow('chat')">✕</div>
+    </div>
+  </div>
+  <div class="win-menubar">
+    <span class="win-menu-item">Conversas</span>
+    <span class="win-menu-item">Contactos</span>
+    <span class="win-menu-item">Ferramentas</span>
+  </div>
+  <div class="win-body" style="display:flex;flex-direction:column">
+    <div style="background:#0d0000;padding:6px 10px;border-bottom:1px solid #2a0000;font-size:10px;color:#660000;display:flex;gap:12px">
+      <span>● Tomás <span style="color:#00cc00">online</span></span>
+      <span>● Diogo <span style="color:#440000">offline</span></span>
+      <span>● Rui <span style="color:#440000">offline</span></span>
+    </div>
+    <div class="chat-log" id="chat-log" style="flex:1">
+      <div class="msg sys"><div class="msg-bubble">— Grupo criado a 09/10/2003 —</div></div>
+
+      <div class="msg them"><div class="msg-name">Diogo</div><div class="msg-bubble">malta, tou todo entusiasmado para amanhã. vamos finalmente ver se aquela casa é real lol</div><div class="msg-time">09/10 · 21:34</div></div>
+
+      <div class="msg them" style="--align:flex-start"><div class="msg-name">Rui</div><div class="msg-bubble">eu não tenho boa sensação. vi um artigo sobre aquela zona. desapareceu uma família inteira em 1981. nunca encontraram os corpos</div><div class="msg-time">09/10 · 21:41</div></div>
+
+      <div class="msg me"><div class="msg-name">Tomás</div><div class="msg-bubble">malta é só uma casa abandonada 😂 o rui é sempre assim. vemo-nos amanhã às 14h</div><div class="msg-time">09/10 · 21:45</div></div>
+
+      <div class="msg them"><div class="msg-name">Diogo</div><div class="msg-bubble">havia algo estranho naquela divisão do fundo. não consigo explicar mas não queria estar perto dali</div><div class="msg-time">10/10 · 23:12</div></div>
+
+      <div class="msg them" style="--align:flex-start"><div class="msg-name">Rui</div><div class="msg-bubble">as fotos que tirei... quando as fui ver no pc algumas têm uma figura que não estava lá quando tirei. juro por deus</div><div class="msg-time">11/10 · 00:43</div></div>
+
+      <div class="msg me"><div class="msg-name">Tomás</div><div class="msg-bubble">que figura? manda as fotos</div><div class="msg-time">11/10 · 00:51</div></div>
+
+      <div class="msg them" style="--align:flex-start"><div class="msg-name">Rui</div><div class="msg-bubble">não consigo abrir os ficheiros agora. dá erro. vou tentar amanhã</div><div class="msg-time">11/10 · 00:53</div></div>
+
+      <div class="msg sys"><div class="msg-bubble">— Diogo saiu da conversa · 11/10 · 22:00 —</div></div>
+
+      <div class="msg them" style="--align:flex-start"><div class="msg-name">Rui</div><div class="msg-bubble">tomás acorda. o diogo não responde. fui à porta dele não está em casa. a janela do quarto estava aberta</div><div class="msg-time">12/10 · 08:22</div></div>
+
+      <div class="msg me"><div class="msg-name">Tomás</div><div class="msg-bubble">meu deus. vou ligar à mãe dele</div><div class="msg-time">12/10 · 09:01</div></div>
+
+      <div class="msg them" style="--align:flex-start"><div class="msg-name">Rui</div><div class="msg-bubble">eu sei onde ele está</div><div class="msg-time">12/10 · 23:58</div></div>
+
+      <div class="msg me"><div class="msg-name">Tomás</div><div class="msg-bubble">rui?? onde??? responde</div><div class="msg-time">13/10 · 00:02</div></div>
+
+      <div class="msg sys"><div class="msg-bubble">— Rui saiu da conversa · 13/10 · 00:03 —</div></div>
+
+      <div class="msg sys"><div class="msg-bubble">— Tomás saiu da conversa · 13/10 · 03:41 —</div></div>
+
+      <div class="msg sys"><div class="msg-bubble" style="color:#cc0000;font-style:normal">— NENHUM UTILIZADOR VOLTOU A ENTRAR —</div></div>
+    </div>
+    <div style="border-top:1px solid #2a0000;padding:6px;display:flex;gap:6px;background:#0d0000">
+      <input type="text" placeholder="Escreve uma mensagem..." style="flex:1;background:#000;border:1px inset #3d0000;color:#666;font-family:'Share Tech Mono',monospace;font-size:11px;padding:4px 8px;outline:none" disabled>
+      <button style="background:#1a0000;border:2px outset #3d0000;color:#440000;font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 10px;cursor:not-allowed" disabled>Enviar</button>
+    </div>
+  </div>
+  <div class="win-resize" onmousedown="startResize(event,'win-chat')"></div>
+</div>
+
+<!-- MEDIA PLAYER -->
+<div class="window" id="win-media" style="width:360px;height:380px;top:100px;left:240px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-media')">
+    <span class="win-icon">🎵</span>
+    <span class="win-title">DarkMedia Player</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('media')">_</div>
+      <div class="win-btn" onclick="maximizeWindow('win-media')">□</div>
+      <div class="win-btn close" onclick="closeWindow('media')">✕</div>
+    </div>
+  </div>
+  <div class="win-body" style="padding:0">
+    <div class="media-player">
+      <div class="media-display" id="media-display">
+        <span id="media-now-playing">■ SEM FAIXA SELECIONADA</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="media-progress"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#440000;margin-bottom:8px">
+        <span id="media-time">0:00</span>
+        <span id="media-total">0:00</span>
+      </div>
+      <ul class="track-list" id="track-list">
+        <li class="track-item" onclick="playTrack(0,this)"><span class="track-num">01</span>sons_da_casa.mp3</li>
+        <li class="track-item" onclick="playTrack(1,this)"><span class="track-num">02</span>mensagem_rui_317am.wav</li>
+        <li class="track-item" onclick="playTrack(2,this)"><span class="track-num">03</span>gritos_andar_cima.wav</li>
+        <li class="track-item" onclick="playTrack(3,this)"><span class="track-num">04</span>diogo_nao_esta.mp3</li>
+        <li class="track-item" onclick="playTrack(4,this)"><span class="track-num">05</span>[FICHEIRO_CORROMPIDO].???</li>
+      </ul>
+      <div class="media-controls">
+        <button class="media-btn" onclick="mediaPrev()">⏮</button>
+        <button class="media-btn" id="media-play-btn" onclick="mediaPlayPause()">▶</button>
+        <button class="media-btn" onclick="mediaStop()">⏹</button>
+        <button class="media-btn" onclick="mediaNext()">⏭</button>
+      </div>
+    </div>
+  </div>
+  <div class="win-resize" onmousedown="startResize(event,'win-media')"></div>
+</div>
+
+<!-- PHOTOS -->
+<div class="window" id="win-photos" style="width:480px;height:380px;top:70px;left:200px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-photos')">
+    <span class="win-icon">🖼️</span>
+    <span class="win-title">Visualizador de Fotografias — Fotos da Casa</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('photos')">_</div>
+      <div class="win-btn" onclick="maximizeWindow('win-photos')">□</div>
+      <div class="win-btn close" onclick="closeWindow('photos')">✕</div>
+    </div>
+  </div>
+  <div class="win-body" style="padding:0">
+    <div class="photo-viewer">
+      <div class="photo-display" id="photo-display">
+        <div class="photo-ascii" id="photo-ascii">Seleciona uma fotografia abaixo</div>
+      </div>
+      <div style="font-size:10px;color:#440000;padding:2px 4px" id="photo-caption">—</div>
+      <div class="photo-thumb-row">
+        <div class="photo-thumb" onclick="viewPhoto(0,this)" title="foto_01.jpg">📷</div>
+        <div class="photo-thumb" onclick="viewPhoto(1,this)" title="foto_02.jpg">📷</div>
+        <div class="photo-thumb" onclick="viewPhoto(2,this)" title="foto_03.jpg">📷</div>
+        <div class="photo-thumb" onclick="viewPhoto(3,this)" title="foto_FIGURA.jpg" style="border-color:#660000">⚠️</div>
+      </div>
+    </div>
+  </div>
+  <div class="win-resize" onmousedown="startResize(event,'win-photos')"></div>
+</div>
+
+<!-- TERMINAL -->
+<div class="window" id="win-terminal" style="width:500px;height:360px;top:90px;left:180px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-terminal')">
+    <span class="win-icon">💻</span>
+    <span class="win-title">DARKOS Terminal v2.3</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('terminal')">_</div>
+      <div class="win-btn" onclick="maximizeWindow('win-terminal')">□</div>
+      <div class="win-btn close" onclick="closeWindow('terminal')">✕</div>
+    </div>
+  </div>
+  <div class="win-body" style="padding:0">
+    <div class="terminal-body" id="terminal-body" onclick="document.getElementById('term-input').focus()">
+      <div class="term-line" style="color:#cc0000">DARKOS Terminal [Versão 2.3.1003]</div>
+      <div class="term-line" style="color:#660000">© 2003 DarkOS Corp. — Todos os direitos malditos reservados.</div>
+      <div class="term-line">&nbsp;</div>
+      <div class="term-line" style="color:#cc9900">AVISO: Sistema comprometido. Alguns comandos podem produzir resultados inesperados.</div>
+      <div class="term-line">&nbsp;</div>
+      <div class="term-line term-prompt">C:\Utilizadores\Tomás> <span style="color:#ccc">help</span></div>
+      <div class="term-line">&nbsp;</div>
+      <div class="term-line" style="color:#aaa">Comandos disponíveis:</div>
+      <div class="term-line" style="color:#888">&nbsp; dir &nbsp;&nbsp;&nbsp;— listar ficheiros</div>
+      <div class="term-line" style="color:#888">&nbsp; tipo &nbsp;— ler ficheiro</div>
+      <div class="term-line" style="color:#888">&nbsp; ver &nbsp;&nbsp;— sistema</div>
+      <div class="term-line" style="color:#888">&nbsp; ping &nbsp;— verificar rede</div>
+      <div class="term-line" style="color:#888">&nbsp; apagar— apagar registo</div>
+      <div class="term-line" style="color:#888">&nbsp; ajuda &nbsp;— esta ajuda</div>
+      <div class="term-line">&nbsp;</div>
+      <div id="term-output"></div>
+      <div class="term-input-line">
+        <span class="term-prompt">C:\Utilizadores\Tomás>&nbsp;</span>
+        <input type="text" id="term-input" onkeydown="handleTermInput(event)" autocomplete="off" spellcheck="false">
+        <span class="term-cursor"></span>
+      </div>
+    </div>
+  </div>
+  <div class="win-resize" onmousedown="startResize(event,'win-terminal')"></div>
+</div>
+
+<!-- LOCKED FILE -->
+<div class="window" id="win-locked" style="width:380px;height:300px;top:120px;left:220px">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-locked')">
+    <span class="win-icon">🔒</span>
+    <span class="win-title">RUI_privado.enc — Protegido por senha</span>
+    <div class="win-controls">
+      <div class="win-btn" onclick="minimizeWindow('locked')">_</div>
+      <div class="win-btn close" onclick="closeWindow('locked')">✕</div>
+    </div>
+  </div>
+  <div class="win-body" style="padding:0;position:relative">
+    <div class="password-overlay" id="locked-pw">
+      <div class="pw-title">🔒 ARQUIVO CIFRADO</div>
+      <div style="font-size:11px;color:#660000;text-align:center;max-width:240px">
+        Este ficheiro foi protegido por Rui.<br>Introduz a senha para continuar.
+      </div>
+      <input type="password" class="pw-input" id="pw-input" placeholder="* * * * * *" onkeydown="if(event.key==='Enter')checkPassword()">
+      <button class="pw-btn" onclick="checkPassword()">DESBLOQUEAR</button>
+      <div class="pw-hint">Dica: o nome do lugar onde tudo começou</div>
+      <div class="pw-error" id="pw-error" style="display:none">❌ Senha incorreta. Tenta novamente.</div>
+    </div>
+    <div id="locked-content" style="display:none;padding:12px">
+      <div style="color:#ff4444;font-size:14px;margin-bottom:10px;text-shadow:0 0 8px #ff0000">📂 RUI — NOTAS SECRETAS</div>
+      <div style="color:#ccaaaa;font-size:11px;line-height:1.8">
+        <p><strong style="color:#880000">09/10 — Não devia ter ido.</strong><br>
+        Vi algo na cave da casa. Uma porta que não estava no mapa. Aberta. Com degraus a descer. Não desci mas ouvi algo lá em baixo. Como alguém a arrastar os pés.</p>
+        <br>
+        <p><strong style="color:#880000">11/10 — As fotos.</strong><br>
+        A figura nas fotos. Não é uma sombra. Tem forma. Olha diretamente para a câmara. Mas quando tirei as fotos não havia ninguém.</p>
+        <br>
+        <p><strong style="color:#880000">12/10 — Sei onde está o Diogo.</strong><br>
+        Voltei à casa. Não devia ter voltado. A porta da cave estava fechada mas havia luz por baixo. E ruídos.<br>
+        Diogo. O Diogo está lá em baixo.<br>
+        Não estava sozinho.</p>
+        <br>
+        <p style="color:#660000;font-style:italic">Este é o meu último registo.<br>Se encontrares isto, não vás à casa.<br>— Rui, 12/10/2003, 23:47</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIALOG BOX -->
+<div class="dialog-overlay" id="dialog-overlay">
+  <div class="dialog-box">
+    <div class="dialog-title" id="dialog-title">⚠ Aviso do Sistema</div>
+    <div class="dialog-body" id="dialog-body">Mensagem do sistema.</div>
+    <div class="dialog-buttons" id="dialog-buttons">
+      <button class="dialog-btn" onclick="closeDialog()">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== BOOT SEQUENCE =====
+const bootMessages = [
+  "Inicializando DARKOS 98...",
+  "Verificando integridade do sistema...",
+  "Carregando drivers de áudio...",
+  "A montar sistema de ficheiros...",
+  "ERRO: Ficheiro system32\\memoria.dll não encontrado",
+  "Recuperando dados corrompidos...",
+  "Carregando perfil do utilizador: Tomás...",
+  "AVISO: Última sessão não foi terminada corretamente",
+  "A carregar área de trabalho...",
+  "Bem-vindo."
+];
+
+let bootStep = 0;
+function bootTick() {
+  const fill = document.getElementById('boot-fill');
+  const msg = document.getElementById('boot-msg');
+  if (bootStep < bootMessages.length) {
+    msg.textContent = bootMessages[bootStep];
+    fill.style.width = ((bootStep + 1) / bootMessages.length * 100) + '%';
+    bootStep++;
+    const delay = bootStep === bootMessages.length ? 1200 : Math.random() * 400 + 200;
+    setTimeout(bootTick, delay);
+  } else {
+    setTimeout(() => {
+      document.getElementById('boot-screen').style.transition = 'opacity 0.8s';
+      document.getElementById('boot-screen').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('boot-screen').style.display = 'none';
+        createDrips();
+        setTimeout(() => showDialog('welcome'), 600);
+      }, 800);
+    }, 500);
+  }
+}
+
+setTimeout(bootTick, 500);
+
+// ===== BLOOD DRIPS =====
+function createDrips() {
+  const desktop = document.getElementById('desktop');
+  for (let i = 0; i < 8; i++) {
+    const drip = document.createElement('div');
+    drip.className = 'drip';
+    drip.style.left = Math.random() * 100 + '%';
+    drip.style.animationDuration = (Math.random() * 4 + 3) + 's';
+    drip.style.animationDelay = (Math.random() * 6) + 's';
+    drip.style.width = (Math.random() * 2 + 1) + 'px';
+    drip.style.opacity = Math.random() * 0.6 + 0.2;
+    desktop.appendChild(drip);
+  }
+}
+
+// ===== CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clock').textContent = h + ':' + m;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ===== WINDOW MANAGEMENT =====
+let activeWindows = {};
+let zIndex = 200;
+
+const windowMeta = {
+  notepad: { id: 'win-notepad', title: '📝 diario_tomas.txt', icon: '📝' },
+  files:   { id: 'win-files',   title: '📁 Ficheiros Pessoais', icon: '📁' },
+  chat:    { id: 'win-chat',    title: '💬 DarkMessenger', icon: '💬' },
+  media:   { id: 'win-media',   title: '🎵 Media Player', icon: '🎵' },
+  photos:  { id: 'win-photos',  title: '🖼️ Fotos da Casa', icon: '🖼️' },
+  terminal:{ id: 'win-terminal',title: '💻 Terminal', icon: '💻' },
+  locked:  { id: 'win-locked',  title: '🔒 Arquivo Trancado', icon: '🔒' },
+};
+
+function openWindow(name) {
+  const meta = windowMeta[name];
+  if (!meta) return;
+  const el = document.getElementById(meta.id);
+  if (!el) return;
+  el.classList.add('visible');
+  el.style.zIndex = ++zIndex;
+  el.classList.add('focused');
+  activeWindows[name] = true;
+  updateTaskbar();
+  removeFocusFromAll(el);
+  closeStart();
+}
+
+function closeWindow(name) {
+  const meta = windowMeta[name];
+  if (!meta) return;
+  const el = document.getElementById(meta.id);
+  if (el) el.classList.remove('visible');
+  delete activeWindows[name];
+  updateTaskbar();
+}
+
+function minimizeWindow(name) {
+  const meta = windowMeta[name];
+  if (!meta) return;
+  const el = document.getElementById(meta.id);
+  if (el) el.classList.remove('visible');
+  updateTaskbar();
+}
+
+function maximizeWindow(winId) {
+  const el = document.getElementById(winId);
+  if (!el) return;
+  if (el.dataset.maximized === '1') {
+    el.style.top = el.dataset.prevTop;
+    el.style.left = el.dataset.prevLeft;
+    el.style.width = el.dataset.prevW;
+    el.style.height = el.dataset.prevH;
+    el.dataset.maximized = '0';
+  } else {
+    el.dataset.prevTop = el.style.top;
+    el.dataset.prevLeft = el.style.left;
+    el.dataset.prevW = el.style.width;
+    el.dataset.prevH = el.style.height;
+    el.style.top = '0';
+    el.style.left = '0';
+    el.style.width = '100vw';
+    el.style.height = 'calc(100vh - 40px)';
+    el.dataset.maximized = '1';
+  }
+}
+
+function removeFocusFromAll(except) {
+  document.querySelectorAll('.window').forEach(w => {
+    if (w !== except) w.classList.remove('focused');
+  });
+}
+
+function focusWindow(el, name) {
+  el.style.zIndex = ++zIndex;
+  el.classList.add('visible');
+  el.classList.add('focused');
+  activeWindows[name] = true;
+  removeFocusFromAll(el);
+  updateTaskbar();
+}
+
+function updateTaskbar() {
+  const bar = document.getElementById('taskbar-tasks');
+  bar.innerHTML = '';
+  for (const [name, open] of Object.entries(activeWindows)) {
+    const meta = windowMeta[name];
+    if (!meta) continue;
+    const btn = document.createElement('div');
+    btn.className = 'taskbar-task';
+    const el = document.getElementById(meta.id);
+    if (el && el.classList.contains('visible')) btn.classList.add('active');
+    btn.innerHTML = meta.icon + ' ' + meta.title.replace(/^.{2}/,'');
+    btn.onclick = () => {
+      if (el && el.classList.contains('visible') && el.classList.contains('focused')) {
+        el.classList.remove('visible');
+      } else {
+        openWindow(name);
+      }
+    };
+    bar.appendChild(btn);
+  }
+}
+
+// Click on windows to focus
+document.querySelectorAll('.window').forEach(el => {
+  el.addEventListener('mousedown', () => {
+    el.style.zIndex = ++zIndex;
+    removeFocusFromAll(el);
+    el.classList.add('focused');
+  });
+});
+
+// ===== DRAG =====
+let drag = null;
+function startDrag(e, winId) {
+  if (e.target.classList.contains('win-btn')) return;
+  const el = document.getElementById(winId);
+  const rect = el.getBoundingClientRect();
+  drag = { el, ox: e.clientX - rect.left, oy: e.clientY - rect.top };
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', stopDrag);
+  e.preventDefault();
+}
+
+function onDrag(e) {
+  if (!drag) return;
+  let x = e.clientX - drag.ox;
+  let y = e.clientY - drag.oy;
+  x = Math.max(0, Math.min(x, window.innerWidth - drag.el.offsetWidth));
+  y = Math.max(0, Math.min(y, window.innerHeight - 40 - drag.el.offsetHeight));
+  drag.el.style.left = x + 'px';
+  drag.el.style.top = y + 'px';
+}
+
+function stopDrag() {
+  drag = null;
+  document.removeEventListener('mousemove', onDrag);
+  document.removeEventListener('mouseup', stopDrag);
+}
+
+// ===== RESIZE =====
+let resizeEl = null, resizeStart = {};
+function startResize(e, winId) {
+  resizeEl = document.getElementById(winId);
+  resizeStart = { x: e.clientX, y: e.clientY, w: resizeEl.offsetWidth, h: resizeEl.offsetHeight };
+  document.addEventListener('mousemove', onResize);
+  document.addEventListener('mouseup', stopResize);
+  e.preventDefault();
+  e.stopPropagation();
+}
+function onResize(e) {
+  if (!resizeEl) return;
+  resizeEl.style.width = Math.max(200, resizeStart.w + (e.clientX - resizeStart.x)) + 'px';
+  resizeEl.style.height = Math.max(150, resizeStart.h + (e.clientY - resizeStart.y)) + 'px';
+}
+function stopResize() {
+  resizeEl = null;
+  document.removeEventListener('mousemove', onResize);
+  document.removeEventListener('mouseup', stopResize);
+}
+
+// ===== START MENU =====
+function toggleStartMenu() {
+  document.getElementById('start-menu').classList.toggle('open');
+}
+function closeStart() {
+  document.getElementById('start-menu').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#start-menu') && !e.target.closest('#start-btn')) closeStart();
+  if (!e.target.closest('#context-menu')) hideCtx();
+});
+
+// ===== CONTEXT MENU =====
+document.getElementById('desktop').addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const ctx = document.getElementById('context-menu');
+  ctx.style.left = e.clientX + 'px';
+  ctx.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+  ctx.classList.add('show');
+});
+function hideCtx() { document.getElementById('context-menu').classList.remove('show'); }
+
+// ===== DIALOG =====
+const dialogs = {
+  welcome: {
+    title: '🖥️ Bem-vindo ao DARKOS 98',
+    body: 'Este computador pertenceu a Tomás Costa.<br><br>Foram encontrados ficheiros pessoais intactos. O utilizador não foi localizado desde 13 de outubro de 2003.<br><br><span style="color:#660000">A Polícia Judiciária solicitou que não apagues nenhum ficheiro.</span>',
+    btns: [{ label:'OK', fn:'closeDialog()' }, { label:'Cancelar', fn:'closeDialog()' }]
+  },
+  apagado: {
+    title: '⚠️ Ficheiro Recuperado',
+    body: '<strong style="color:#cc0000">AVISO: Este ficheiro foi apagado mas recuperado pelo sistema.</strong><br><br>Conteúdo:<br><br><span style="font-family:\'Share Tech Mono\',monospace;color:#888">Coordenadas: 40.2125° N, 8.4291° O<br>A casa está ao fim da estrada velha.<br>Eles ainda estão lá dentro.<br>Não entres.<br><br>[RESTO DO FICHEIRO CORROMPIDO]</span>',
+    btns: [{ label:'Fechar', fn:'closeDialog()' }]
+  },
+};
+
+function showDialog(key, customTitle, customBody) {
+  const overlay = document.getElementById('dialog-overlay');
+  const d = dialogs[key];
+  if (d) {
+    document.getElementById('dialog-title').innerHTML = d.title;
+    document.getElementById('dialog-body').innerHTML = d.body;
+    const btns = document.getElementById('dialog-buttons');
+    btns.innerHTML = '';
+    (d.btns || [{ label:'OK', fn:'closeDialog()' }]).forEach(b => {
+      btns.innerHTML += `<button class="dialog-btn" onclick="${b.fn}">${b.label}</button>`;
+    });
+  } else {
+    document.getElementById('dialog-title').innerHTML = customTitle || '⚠ Aviso';
+    document.getElementById('dialog-body').innerHTML = customBody || '';
+  }
+  overlay.classList.add('show');
+}
+
+function closeDialog() {
+  document.getElementById('dialog-overlay').classList.remove('show');
+}
+
+// ===== PASSWORD =====
+function checkPassword() {
+  const val = document.getElementById('pw-input').value.trim().toLowerCase();
+  const correct = ['casa', 'acasa', 'a casa', 'estrada', 'velha'];
+  if (correct.includes(val)) {
+    document.getElementById('locked-pw').classList.add('hidden');
+    document.getElementById('locked-content').style.display = 'block';
+  } else {
+    const err = document.getElementById('pw-error');
+    err.style.display = 'block';
+    err.style.animation = 'none';
+    requestAnimationFrame(() => err.style.animation = 'shake 0.3s');
+    setTimeout(() => err.style.display = 'none', 2000);
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+// ===== NOTEPAD FILES =====
+const notepadContents = {
+  diario: document.getElementById('notepad-textarea').value,
+  carta: `Carta para a mãe — 13 de outubro de 2003
+
+Mãe,
+
+Se estás a ler isto, encontraram o meu computador.
+Sei que isto vai parecer loucura.
+
+Nós fomos à casa. Eu, o Diogo e o Rui. Foi ideia minha.
+O Diogo desapareceu primeiro. Depois o Rui foi à procura dele e não voltou.
+
+Agora ouço coisas no andar de cima. Tenho medo de sair.
+Tenho medo de ficar.
+
+Sei o que está lá em cima.
+
+Sei que é o que restou deles.
+
+Perdoa-me por não os ter protegido.
+
+O teu filho,
+Tomás
+
+P.S. — O número da conta está na gaveta do lado esquerdo da secretária. As flores para o meu funeral devem ser vermelhas.`,
+  coordenadas: `[FICHEIRO ENCRIPTADO — RECUPERAÇÃO PARCIAL]
+
+40.2125° N, 8.4291° O
+
+...casa...estrada velha...não...
+
+...cave...porta...descidas...
+
+...eles ainda...
+
+[DADOS CORROMPIDOS — FIM DO FICHEIRO]`,
+  audio: `[Transcrição automática — mensagem_rui_317am.wav]
+[Qualidade de áudio: MUITO BAIXA]
+[Duração: 2 minutos e 43 segundos]
+
+---
+
+[0:00 - 0:12] Respiração pesada. Passos em pedra.
+
+[0:13] "Tomás... tou cá em baixo..."
+
+[0:21 - 0:44] Ruído não identificado. [SISTEMA: possível vocalização humana]
+
+[0:45] "Encontrei o Diogo. Ele está—"
+
+[0:49 - 1:23] [DADOS CORROMPIDOS]
+
+[1:24] "—não és humano. Não és humano."
+
+[1:25 - 2:30] [DADOS CORROMPIDOS]
+
+[2:31] Silêncio.
+
+[2:39] Respiração — origem: desconhecida.
+
+[2:43] FIM.
+
+---
+[AVISO: Transcrição gerada com 34% de confiança]`
+};
+
+function openNotepad(key) {
+  const ta = document.getElementById('notepad-textarea');
+  if (notepadContents[key]) ta.value = notepadContents[key];
+  const titles = {
+    diario: 'diario_tomas.txt',
+    carta: 'carta_para_mae.txt',
+    coordenadas: 'coordenadas.txt',
+    audio: 'mensagem_rui_317am [TRANSCRIÇÃO].txt'
+  };
+  const win = document.getElementById('win-notepad');
+  win.querySelector('.win-title').textContent = '📝 Bloco de Notas — ' + (titles[key] || key);
+  openWindow('notepad');
+}
+
+// ===== MEDIA PLAYER =====
+const tracks = [
+  { name: 'sons_da_casa.mp3', duration: '3:22', desc: 'Gravação de áudio da casa — 10/10/2003' },
+  { name: 'mensagem_rui_317am.wav', duration: '2:43', desc: 'Mensagem de voz — Rui, 13/10 às 3:17' },
+  { name: 'gritos_andar_cima.wav', duration: '0:47', desc: 'Gravação do quarto de Tomás — 13/10' },
+  { name: 'diogo_nao_esta.mp3', duration: '1:11', desc: 'Mensagem de voz — mãe do Diogo' },
+  { name: '[FICHEIRO_CORROMPIDO].???', duration: '???', desc: '⚠ FICHEIRO DANIFICADO' },
+];
+
+let currentTrack = -1;
+let isPlaying = false;
+let mediaInterval = null;
+let mediaSeconds = 0;
+
+function playTrack(idx, el) {
+  document.querySelectorAll('.track-item').forEach(t => t.classList.remove('playing'));
+  el.classList.add('playing');
+  currentTrack = idx;
+  const t = tracks[idx];
+  isPlaying = true;
+  document.getElementById('media-play-btn').textContent = '⏸';
+  document.getElementById('media-now-playing').textContent = '▶ ' + t.name;
+  document.getElementById('media-total').textContent = t.duration;
+  mediaSeconds = 0;
+  clearInterval(mediaInterval);
+  if (idx === 4) {
+    setTimeout(() => {
+      showDialog(null, '⚠ Erro de Leitura', 'Não foi possível ler o ficheiro.<br><br><span style="color:#660000">Este ficheiro foi danificado ou modificado de forma não autorizada.</span><br><br>Código de erro: 0x000003E5');
+      mediaStop();
+    }, 1500);
+    return;
+  }
+  const totalSecs = parseDuration(t.duration);
+  mediaInterval = setInterval(() => {
+    mediaSeconds++;
+    const pct = Math.min((mediaSeconds / totalSecs) * 100, 100);
+    document.getElementById('media-progress').style.width = pct + '%';
+    document.getElementById('media-time').textContent = formatTime(mediaSeconds);
+    if (mediaSeconds >= totalSecs) { mediaStop(); }
+  }, 100); // Fast for demo
+}
+
+function parseDuration(s) {
+  if (s === '???') return 30;
+  const parts = s.split(':');
+  return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+}
+function formatTime(s) {
+  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+}
+
+function mediaPlayPause() {
+  if (currentTrack === -1) { playTrack(0, document.querySelectorAll('.track-item')[0]); return; }
+  if (isPlaying) {
+    clearInterval(mediaInterval);
+    isPlaying = false;
+    document.getElementById('media-play-btn').textContent = '▶';
+  } else {
+    isPlaying = true;
+    document.getElementById('media-play-btn').textContent = '⏸';
+    const t = tracks[currentTrack];
+    const totalSecs = parseDuration(t.duration);
+    mediaInterval = setInterval(() => {
+      mediaSeconds++;
+      document.getElementById('media-progress').style.width = Math.min((mediaSeconds/totalSecs)*100,100)+'%';
+      document.getElementById('media-time').textContent = formatTime(mediaSeconds);
+      if (mediaSeconds >= totalSecs) mediaStop();
+    }, 100);
+  }
+}
+
+function mediaStop() {
+  clearInterval(mediaInterval);
+  isPlaying = false;
+  document.getElementById('media-play-btn').textContent = '▶';
+  document.getElementById('media-now-playing').textContent = '■ PARADO';
+  document.getElementById('media-progress').style.width = '0%';
+  document.getElementById('media-time').textContent = '0:00';
+  mediaSeconds = 0;
+  document.querySelectorAll('.track-item').forEach(t => t.classList.remove('playing'));
+}
+
+function mediaNext() {
+  if (currentTrack < tracks.length - 1) {
+    const items = document.querySelectorAll('.track-item');
+    playTrack(currentTrack + 1, items[currentTrack + 1]);
+  }
+}
+
+function mediaPrev() {
+  if (currentTrack > 0) {
+    const items = document.querySelectorAll('.track-item');
+    playTrack(currentTrack - 1, items[currentTrack - 1]);
+  }
+}
+
+// ===== PHOTOS =====
+const photos = [
+  {
+    caption: 'foto_01.jpg — Entrada da casa · 10/10/2003',
+    ascii: `
+██████████████████████████████
+█░░░░░░░░░░░░░░░░░░░░░░░░░░░░█
+█░ ▄▄▄▄▄▄▄░░░░░░░░░▄▄▄▄▄▄▄ ░█
+█░ █     █░░░░░░░░░█     █ ░█
+█░ █     █░░░░░░░░░█     █ ░█
+█░ ▀▀▀▀▀▀▀░░░░░░░░░▀▀▀▀▀▀▀ ░█
+█░░░░░░░░░░░░▄█▄░░░░░░░░░░░░░█
+█░░░░░░░░░░░░█ █░░░░░░░░░░░░░█
+█░░░░░░░░░░░░▀▀▀░░░░░░░░░░░░░█
+██████████████████████████████
+    ENTRADA DA CASA ABANDONADA
+    Estrada Velha, nº sem número`
+  },
+  {
+    caption: 'foto_02.jpg — Corredor interior · 10/10/2003',
+    ascii: `
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░▓▓▓▓▓░░░░░░░░░░░░░░░░░░▓▓▓▓▓░
+░█   █░░░░░░░░░░░░░░░░░░█   █░
+░█   █░░░░░░░░░░░░░░░░░░█   █░
+░█   █░░░░░░░░▀▀░░░░░░░░█   █░
+░▓▓▓▓▓░░░░░░░░░░░░░░░░░░▓▓▓▓▓░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    CORREDOR DO 1º ANDAR
+    Marcas nas paredes não identificadas`
+  },
+  {
+    caption: 'foto_03.jpg — Cave (parcial) · 11/10/2003 · Rui',
+    ascii: `
+████████████████████████████
+█░░░░░░░░░░░░░░░░░░░░░░░░░░█
+█░░░░░░░▄████▄░░░░░░░░░░░░░█
+█░░░░░░░█░░░░█░░░░░░░░░░░░░█
+█░░░░░░░█░░░░█░░░░░░░░░░░░░█
+█░░░░░░░▀████▀░░░░░░░░░░░░░█
+█░░░░░░░░░░░░░░░░░░░░░░░░░░█
+██████████████████████████▄█
+     PORTA DA CAVE — ABERTA
+     Foto tirada por Rui Silva`
+  },
+  {
+    caption: '⚠ foto_FIGURA.jpg — ANOMALIA DETETADA · 11/10/2003',
+    ascii: `
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓░░░░░░░░░░░░░░░░░░░░░░░░░░░▓
+▓░░░░░░░░░░░░░░░░░░░░░░░░░░░▓
+▓░░░░░░░░░▄██▄░░░░░░░░░░░░░░▓
+▓░░░░░░░░▐████▌░░░░░░░░░░░░░▓
+▓░░░░░░░░░████░░░░░░░░░░░░░░▓
+▓░░░░░░░░░▀██▀░░░░░░░░░░░░░░▓
+▓░░░░░░░░░░░░░░░░░░░░░░░░░░░▓
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+ ⚠ FIGURA NÃO ESTAVA PRESENTE
+ ⚠ QUANDO A FOTO FOI TIRADA`
+  }
+];
+
+let selectedPhoto = -1;
+function viewPhoto(idx, el) {
+  document.querySelectorAll('.photo-thumb').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPhoto = idx;
+  const p = photos[idx];
+  document.getElementById('photo-ascii').textContent = p.ascii;
+  document.getElementById('photo-caption').textContent = p.caption;
+  if (idx === 3) {
+    document.getElementById('photo-ascii').style.color = '#990000';
+  } else {
+    document.getElementById('photo-ascii').style.color = '#660000';
+  }
+}
+
+// ===== TERMINAL =====
+const termCommands = {
+  dir: `Diretório de C:\\Utilizadores\\Tomás
+
+13/10/2003  03:38    <DIR>    .
+13/10/2003  03:38    <DIR>    ..
+13/10/2003  03:41    <DIR>    Documentos
+13/10/2003  03:38    <DIR>    Fotos
+13/10/2003  00:03         4.112  diario_tomas.txt
+13/10/2003  03:41         1.024  carta_para_mae.txt
+12/10/2003  23:47    <CIFRADO>  RUI_privado.enc
+12/10/2003  23:48             0  coordenadas.txt
+13/10/2003  03:17       ???.???  mensagem_rui_317am.wav
+               4 ficheiro(s)        ???.??? bytes
+               4 pasta(s)   0 bytes disponíveis`,
+  ver: `DARKOS [Versão 98.0.1003]
+Copyright © 2003 DarkOS Corp.
+
+AVISO DO SISTEMA:
+Detetada atividade anômala na memória.
+Última sessão terminada de forma inesperada.
+Dados do utilizador: PARCIALMENTE RECUPERADOS`,
+  ping: `A verificar ligação de rede...
+
+Tentativa para 192.168.1.1: Sem resposta.
+Tentativa para 8.8.8.8: Sem resposta.
+Tentativa para ???.???.???.???: RESPOSTA RECEBIDA
+
+Origen: DESCONHECIDA
+Tempo: 0ms
+TTL: ∞
+
+AVISO: Origem da ligação não identificada.`,
+  apagar: `AVISO: Operação de eliminação iniciada...
+
+Eliminando registo de erros... OK
+Eliminando ficheiros temporários... OK
+Eliminando cache de memória...
+
+ERRO 0xDEAD: Não é possível apagar.
+Alguns ficheiros recusam-se a ser eliminados.
+Os ficheiros sabem que estás aqui.`,
+  ajuda: `Comandos disponíveis:
+  dir    — listar ficheiros
+  tipo   — ler ficheiro [nome]
+  ver    — informações do sistema
+  ping   — verificar rede
+  apagar — apagar registos
+  ajuda  — esta ajuda`,
+};
+
+function handleTermInput(e) {
+  if (e.key !== 'Enter') return;
+  const input = document.getElementById('term-input');
+  const val = input.value.trim().toLowerCase();
+  input.value = '';
+  const out = document.getElementById('term-output');
+  
+  // Echo command
+  const echo = document.createElement('div');
+  echo.className = 'term-line';
+  echo.innerHTML = `<span class="term-prompt">C:\\Utilizadores\\Tomás>&nbsp;</span>${val}`;
+  out.appendChild(echo);
+
+  let response = '';
+  if (termCommands[val]) {
+    response = termCommands[val];
+  } else if (val.startsWith('tipo ')) {
+    const fname = val.replace('tipo ', '');
+    if (fname === 'diario_tomas.txt') response = notepadContents.diario.substring(0, 200) + '\n...[continua]...';
+    else if (fname === 'carta_para_mae.txt') response = notepadContents.carta;
+    else if (fname === 'coordenadas.txt') response = notepadContents.coordenadas;
+    else response = `ERRO: Ficheiro "${fname}" não encontrado ou sem permissão de leitura.`;
+  } else if (val === '' || val === 'cls') {
+    out.innerHTML = '';
+    return;
+  } else {
+    response = `"${val}" não é reconhecido como um comando interno ou externo.\nEscrive AJUDA para a lista de comandos.`;
+  }
+
+  response.split('\n').forEach(line => {
+    const div = document.createElement('div');
+    div.className = 'term-line';
+    div.style.color = '#aaa';
+    div.textContent = line;
+    out.appendChild(div);
+  });
+
+  const blank = document.createElement('div');
+  blank.className = 'term-line';
+  blank.innerHTML = '&nbsp;';
+  out.appendChild(blank);
+
+  const body = document.getElementById('terminal-body');
+  body.scrollTop = body.scrollHeight;
+}
+
+// ===== BSOD =====
+function triggerBSOD() {
+  closeStart();
+  document.getElementById('bsod').classList.add('show');
+  document.addEventListener('keydown', dismissBSOD, { once: true });
+  document.getElementById('bsod').addEventListener('click', dismissBSOD, { once: true });
+}
+
+function dismissBSOD() {
+  document.getElementById('bsod').classList.remove('show');
+  setTimeout(() => {
+    showDialog(null, '💀 Sistema Reiniciado', 'O sistema foi reiniciado após um erro fatal.<br><br>Algumas memórias podem não ter sobrevivido.');
+  }, 300);
+}
+
+// ===== RANDOM SCARES =====
+const scares = [
+  () => showDialog(null, '👁 AVISO', 'Alguém está a aceder a este computador remotamente.'),
+  () => showDialog(null, '⚠ SISTEMA', 'Os ficheiros estão a ser modificados em tempo real.<br>Não foste tu.'),
+  () => { const icons = document.querySelectorAll('.icon-label'); icons.forEach(i => { if(Math.random()<0.3) i.style.color = '#ff0000'; setTimeout(()=>i.style.color='', 3000); }); },
+  () => showDialog(null, '📁 FICHEIRO CRIADO', 'Um novo ficheiro foi criado:<br><br><span style="font-family:\'Share Tech Mono\'">eles_sabem_que_estas_aqui.txt</span>'),
+];
+
+setInterval(() => {
+  if (Math.random() < 0.15 && document.getElementById('boot-screen').style.display === 'none') {
+    scares[Math.floor(Math.random() * scares.length)]();
+  }
+}, 30000);
+
+// Scroll chat to bottom
+setTimeout(() => {
+  const log = document.getElementById('chat-log');
+  if (log) log.scrollTop = log.scrollHeight;
+}, 100);
+</script>
+</body>
+</html>
