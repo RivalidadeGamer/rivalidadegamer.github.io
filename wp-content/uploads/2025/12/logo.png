@@ -2,10 +2,10 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <title>Minha imagem</title>
+  <title>Logo - RivalidadeGamer</title>
 
   <!-- Favicon (troca o link abaixo pelo ícone que quiser) -->
-  <link rel="icon" type="image/png" href="https://rivalidadegamer.github.io/images/Logo/logo-sem-fundo.png">
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1/1177.png">
 
   <style>
     body {
@@ -26,6 +26,6 @@
 </head>
 <body>
   <!-- Troca o src abaixo pelo link da tua imagem -->
-  <img src="https://rivalidadegamer.github.io/images/Logo/logo-sem-fundo.png" alt="Imagem">
+  <img src="/images/Logo/logo-sem-fundo.png" alt="Imagem">
 </body>
 </html>
