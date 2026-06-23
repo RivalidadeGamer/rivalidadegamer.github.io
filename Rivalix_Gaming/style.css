@@ -1,0 +1,1237 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margem: 0;
+    preenchimento: 0;
+    família de fontes: 'Exo 2', Arial, sem serifa;
+    box-sized: caixa com borda;
+}
+
+html {
+    Comportamento de rolagem: suave;
+}
+
+corpo {
+    cor: #e8e5DE;
+    overflow-x: oculto;
+    fundo: gradiente-linear(para baixo, #0d0d0d, #1a001a);
+}
+
+.navbar {
+    altura: 90px;
+    Exibir: flexível;
+    justify-content: espaço-entre;
+    alinhamento-itens: centro;
+    preenchimento: 0 40px;
+    fundo: rgb(156,156,156, 0.2);
+    posição: absoluta;
+    largura: 100%;
+    topo: 0;
+    Índice z: 10;
+    raio-da-borda-inferior-esquerda: 15px;
+    raio-da-borda-inferior-direita: 15px;
+    box-shadow: 0px 8px 8px #5C128A;
+}
+
+.logo img {
+    margem: 20px;
+    largura: 200px;
+    altura: automática;
+}
+
+.nav-center {
+    flex-grow: 1;
+    Exibir: flexível;
+    justificar-conteúdo: centralizado;
+    alinhamento-itens: centro;
+    margem-direita: 10%;
+}
+
+.nav-links {
+    estilo de lista: nenhum;
+    Exibir: flexível;
+    espaço: 40px;
+}
+
+.nav-links a:hover {
+    cor: #ff6a00;
+    Transição: 0,3s;
+}
+
+.nav-links a {
+    decoração de texto: nenhuma;
+    cor: #e8e5DE;
+    tamanho da fonte: 1,125rem;
+}
+
+.hambúrguer {
+    exibir: nenhum;
+    flex-direction: coluna;
+    cursor: ponteiro;
+    margem-direita: 20px;
+    espaçamento: 6px;
+}
+
+.hambúrguer .linha {
+    largura: 30px;
+    altura: 3px;
+    cor de fundo: #e8e5DE;
+    raio-da-borda: 2px;
+}
+
+.nav-actions {
+    Exibir: flexível;
+    alinhamento-itens: centro;
+    espaço: 20px;
+}
+
+.theme-switch-wrapper {
+    Exibir: flexível;
+    alinhamento-itens: centro;
+}
+
+.theme-switch {
+    posição: relativa;
+    exibição: inline-block;
+    largura: 60px;
+    altura: 30px;
+}
+
+.theme-switch input {
+    opacidade: 0;
+    largura: 0;
+    altura: 0;
+}
+
+.slider {
+    posição: absoluta;
+    cursor: ponteiro;
+    topo: 0;
+    esquerda: 0;
+    direita: 0;
+    parte inferior: 0;
+    cor de fundo: #dfdfdf;
+    Transição: 0,4s;
+    raio da borda: 30px;
+}
+
+.slider:before {
+    posição: absoluta;
+    contente: "";
+    altura: 22px;
+    largura: 22px;
+    esquerda: 4px;
+    parte inferior: 4px;
+    cor de fundo: #fff;
+    Transição: 0,4s;
+    raio-da-borda: 50%;
+}
+
+input:checked + .slider {
+    cor de fundo: #dfdfdf;
+}
+
+input:checked + .slider:before {
+    transformar: traduzirX(30px);
+}
+
+.text-home {
+    visibilidade: oculta;
+}
+
+.pré-registro {
+    Exibir: flexível;
+    alinhamento-itens: centro;
+    justify-content: espaço-entre;
+    margem: 40px;
+    altura mínima: 100vh;
+    espaçamento: 50px;
+}
+
+.texto {
+    flex: 1;
+    Exibir: flexível;
+    flex-direction: coluna;
+    justificar-conteúdo: centralizado;
+}
+
+.texto h1 {
+    tamanho da fonte: 2,9rem;
+    cor: #e8e5DE;
+    margem-inferior: 20px;
+}
+
+.cta botão {
+    margem superior: 40px;
+    cor de fundo: transparente;
+    borda: 2px sólida #FF6A00;
+    preenchimento: 15px 30px;
+    tamanho da fonte: 1,125rem;
+    raio da borda: 8px;
+    cursor: ponteiro;
+    transição: cor de fundo 0,3s, transformação 0,3s;
+}
+
+.cta botão a {
+    decoração de texto: nenhuma;
+    Cor: #FF6A00;
+}
+
+.cta botão:hover {
+    transformar: translateY(-3px);
+    box-shadow: 0 0 16px rgb(255, 106, 0);
+    sombra-texto: 0 0 16px rgb(255, 106, 0);
+}
+
+.image-home {
+    visibilidade: oculta;
+}
+
+.imagem-de-pré-registro {
+    flex: 1;
+    Exibir: flexível;
+    justificar-conteúdo: centralizado;
+    alinhamento-itens: centro;
+    margem superior: 40px;
+}
+
+.imagem-de-pré-registro img {
+    largura máxima: 586px;
+    altura: automática;
+}
+
+.sobre-rivalix {
+    visibilidade: oculta;
+}
+
+.container-info {
+    margem: 40px;
+    margem superior: 100px;
+    borda: 1px sólida #e8e5DE;
+    preenchimento: 50px;
+    cor: #e8e5DE;
+    box-shadow: 0 0 20px 5px #A020F0;
+    raio da borda: 20px;
+}
+
+.container-info h2 {
+    tamanho da fonte: 4rem;
+    margem-inferior: 40px;
+    margem esquerda: 40px;
+}
+
+.container-info p {
+    tamanho da fonte: 1,5rem;
+    margem esquerda: 20px;
+    peso da fonte: 600;
+}
+
+.top-section {
+    margem superior: 100px;
+    preenchimento: 4rem 2rem;
+    alinhamento do texto: centralizado;
+    fundo: transparente;
+    posição: relativa;
+    Índice z: 1;
+}
+
+.features-title-effect {
+    visibilidade: oculta;
+}
+
+.feature-card-effect {
+    visibilidade: oculta;
+}
+
+.features-title {
+    tamanho da fonte: 5rem;
+    peso da fonte: 700;
+    cor: #e8e5DE;
+    margem-inferior: 1,5rem;
+}
+  
+.features-title .highlight {
+    Cor: #FF6A00;
+}
+  
+.features-grid {
+    margem superior: 80px;
+    Exibir: flexível;
+    justificar-conteúdo: centralizado;
+    alinhamento-itens: início-flexível;
+    flex-wrap: envolver;
+    intervalo: 5rem;
+}
+
+.cartão-de-recurso {
+    fundo: rgba(30,30,30, 0.05);
+    borda: 2px sólida #A020F0;
+    raio-da-borda: 1rem;
+    preenchimento: 3rem 1,5rem;
+    largura máxima: 250px;
+    largura: 100%;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    alinhamento do texto: centralizado;
+    transição: transformar 0,3s de facilidade;
+    irá mudar: transformar, sombra de caixa, filtro;
+}
+
+.feature-card:nth-child(2) {
+    margem superior: 50px;
+}
+  
+.feature-card:hover {
+    transformar: escala(1.03);
+    sombra de caixa:
+  0 0 8px rgba(160, 32, 240, 0.5),   
+  0 0 16px rgba(160, 32, 240, 0.4),  
+  0 0 24px rgba(160, 32, 240, 0.3),  
+  0 0 40px rgba(160, 32, 240, 0.2);  
+
+}
+  
+.feature-icon {
+    largura: 100px;
+    altura: 100px;
+    margem-inferior: 1rem;
+    filtro: sombra-projetada(0 2px 4px rgba(0,0,0,0.1));
+}
+  
+.cartão-de-recurso p {
+    tamanho da fonte: 1rem;
+    peso da fonte: 600;
+    cor: #e8e5DE;
+    altura da linha: 1,5;
+}
+
+.rivalix-videos {
+    cor: #00ffe7;
+    alinhamento do texto: centralizado;
+    preenchimento: 80px 20px;
+    família de fontes: 'Press Start 2P', monoespaçada;
+    posição: relativa;
+    overflow: oculto;
+}
+  
+.rivalix-videos::before {
+    contente: '';
+    posição: absoluta;
+    largura: 100%;
+    altura: 100%;
+    eventos-ponteiro: nenhum;
+    Índice z: 0;
+}
+  
+.rivalix-videos h2 {
+    tamanho da fonte: 4rem;
+    text-transform: maiúsculas;
+    margem-inferior: 20px;
+    Cor: #A020F0;
+    borda: #000;
+    Índice z: 1;
+    posição: relativa;
+}
+  
+.rivalix-videos .subtitulo {
+    tamanho da fonte: 1,2rem;
+    margem-inferior: 40px;
+    cor: #ffffff;
+
+    Índice z: 1;
+    posição: relativa;
+}
+
+.videos-title {
+    visibilidade: oculta;
+}
+
+.videos-subtitle {
+    visibilidade: oculta;
+}
+
+.video-card {
+    visibilidade: oculta;
+}
+
+.grade de vídeo {
+    Exibir: flexível;
+    espaço: 40px;
+    justificar-conteúdo: centralizado;
+    flex-wrap: envolver;
+    Índice z: 1;
+    posição: relativa;
+}
+
+.video-grid > vídeo {
+    largura-máxima: nenhuma;
+    largura: 320px;
+    altura: 180px;
+    borda: 2px sólida #A020F0;
+    box-shadow: 0 0 15px #A020F0AA, 0 0 25px #5C128A;
+    transição: transformar 0,3s com suavização, sombra de caixa 0,3s com suavização;
+}
+
+.video-grid video:hover {
+    transformar: escala(1.05);
+    box-shadow: 0 0 25px #5C128A, 0 0 50px #A020F0;
+}
+
+.formulários {
+    visibilidade: oculta;
+}
+
+.formulário-de-pré-registro {
+    largura máxima: 600px;
+    margem: automática;
+    margem superior: 100px;
+    preenchimento: 4rem 2rem;
+    fundo: rgba(30,30,30,0.7);
+    raio da borda: 20px;
+    box-shadow: 0 0 20px rgba(160, 32, 240, 0.3);
+    alinhamento do texto: centralizado;
+}
+
+.formulário-de-pré-registro h2 {
+    tamanho da fonte: 2,5rem;
+    cor: #e8e5DE;
+    margem-inferior: 10px;
+}
+
+.formulário-de-pré-registro p {
+    cor: #e8e5DE;
+    margem-inferior: 2rem;
+}
+
+.form-group {
+    margem-inferior: 1,5rem;
+    alinhamento de texto: esquerda;
+}
+
+.form-group label {
+    exibir: bloco;
+    peso da fonte: 600;
+    margem-inferior: 0,5rem;
+    cor: #e8e5DE;
+}
+
+Entrada .form-group,
+.form-group selecionar {
+    largura: 100%;
+    preenchimento: 12px 16px;
+    raio da borda: 8px;
+    borda: 1px sólida #5C128A;
+    fundo: rgba(255,255,255,0.05);
+    cor: #e8e5DE;
+    tamanho da fonte: 1rem;
+}
+
+.form-group input::placeholder {
+    cor: #bbb;
+}
+
+.form-group opção {
+    cor de fundo: #1e1e1e;
+    
+}
+
+.lgpd-wrapper {
+    largura: 100%;
+    margem superior: 20px;
+    margem-inferior: 20px;
+}
+  
+.lgpd-consent {
+    exibir: bloco;
+    tamanho da fonte: 0,85rem;
+    cor: #fff;
+    altura da linha: 1,5;
+}
+  
+.lgpd-consent a {
+    Cor: #A020F0;
+    decoração de texto: sublinhado;
+}
+  
+.lgpd-consent input[type="checkbox"] {
+    margem-direita: 8px;
+    transformar: escala(1.2);
+}
+
+.submit-button {
+    margem-superior: 2rem;
+    preenchimento: 15px 30px;
+    tamanho da fonte: 1,1rem;
+    Cor: #FF6A00;
+    fundo: transparente;
+    borda: 2px sólida #FF6A00;
+    raio da borda: 8px;
+    cursor: ponteiro;
+    transição: cor de fundo 0,3s, transformação 0,3s;
+}
+
+.submit-button:hover {
+    transformar: translateY(-3px);
+    box-shadow: 0 0 16px rgb(255, 106, 0);
+    sombra-texto: 0 0 16px rgb(255, 106, 0);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    Esboço: nenhum;
+    cor da borda: #A020F0;
+    sombra de caixa:
+      0 0 8px rgba(160, 32, 240, 0.5),   
+      0 0 16px rgba(160, 32, 240, 0.4),  
+      0 0 24px rgba(160, 32, 240, 0.3),  
+      0 0 40px rgba(160, 32, 240, 0.2);  
+    transição: sombra da caixa 0,4s de suavização, cor da borda 0,4s de suavização;
+}
+
+.slogan {
+   visibilidade: oculta;
+}
+
+.hero-message {
+    margem: 100px auto 0 auto;
+    margem superior: 150px;
+    largura máxima: 1200px;
+    preenchimento: 0 20px;
+    Exibir: flexível;
+    flex-direction: coluna;
+    alinhamento-itens: centro;
+    intervalo: 4rem;
+    alinhamento do texto: centralizado;
+}
+  
+
+.linha2 {
+    largura: 90%;
+    largura máxima: 1200px;
+    altura: 3px;
+    fundo: #e8e5DE;
+    opacidade: 0,9;
+    filtro: desfoque(2px);
+    sombra de caixa:
+      0 0 10px #ffffff,
+      0 0 20px #ffffff,
+      0 0 30px #ffffff,
+      0 0 50px #ffffff;
+    transição: todos os 0,4s de facilidade;
+    margem: 30px 0;
+}
+  
+.mensagem-principal {
+    tamanho da fonte: 4,3rem;
+    cor: #ffffff;
+    peso da fonte: 700;
+    altura da linha: 1,4;
+}
+
+.rodapé {
+    margem superior: 100px;
+    posição: relativa;
+    fundo: #1e1e1e;
+    preenchimento: 2rem 4rem;
+    raio da borda: 30px 30px 0 0;
+    família de fontes: 'Arial', sem serifa;
+    sombra de caixa:
+      0 0 10px #B086CC,
+      0 0 20px #B086CC,
+      0 0 40px #B086CC;
+    borda: 2px sólida #B086CC;
+  }
+  
+.footer-top {
+    Exibir: flexível;
+    justify-content: espaço-entre;
+    borda inferior: nenhuma;
+    posição: relativa;
+    flex-wrap: envolver;
+    padding-bottom: 2rem;
+    borda inferior: 2px sólida #B086CC;
+    intervalo: 2rem;
+}
+  
+.footer-logo img {
+    largura: 250px;
+    margem-inferior: 10px;
+}
+  
+.footer-logo p {
+    peso da fonte: 600;
+    tamanho da fonte: 1rem;
+    margem-inferior: 1rem;
+    largura máxima: 360px;
+}
+  
+.footer-logo span {
+    cor: #ff6600;
+}
+  
+.social-icons uma imagem {
+    largura: 40px;
+    altura: 40px;
+    margem-direita: 12px;
+    margem superior: 12px;
+    transição: transformar 0,2s;
+}
+  
+.social-icons a:hover img {
+    transformar: escala(1.1);
+}
+  
+.footer-links ul, .footer-contact ul {
+    estilo de lista: nenhum;
+    preenchimento: 0;
+    margem superior: 20px;
+}
+  
+.footer-links li, .footer-contact li {
+    margem-inferior: 10px;
+}
+  
+.footer-links a, .footer-policy a {
+    decoração de texto: nenhuma;
+    cor: #e8e5DE;
+    peso da fonte: 500;
+}
+  
+.footer-bottom {
+    Exibir: flexível;
+    justify-content: espaço-entre;
+    alinhamento-itens: centro;
+    flex-wrap: envolver;
+    tamanho da fonte: 0,9rem;
+    padding-top: 1.5rem;
+    cor: #e8e5DE;
+}
+  
+.footer-policy {
+    estilo de lista: nenhum;
+    Exibir: flexível;
+    intervalo: 1,5rem;
+    preenchimento: 0;
+    margem: 0;
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 1028px) {
+    .pré-registro {
+        flex-direction: coluna;
+        alinhamento-itens: centro;
+        justificar-conteúdo: centralizado;
+        margem: 40px 20px;
+        espaçamento: 30px;
+    }
+
+    .imagem-de-pré-registro {
+        ordem: -1;
+        margem superior: 80px;
+    }
+
+    .texto {
+        alinhamento do texto: centralizado;
+        ordem: 1;
+    }
+
+    .texto h1 {
+        tamanho da fonte: 2,4rem;
+    }
+
+    .cta botão {
+        tamanho da fonte: 1,05rem;
+        preenchimento: 14px 28px;
+        margem superior: 20px;
+        largura: 100%;
+        largura máxima: 300px;
+    }
+
+    .imagem-de-pré-registro img {
+        largura máxima: 90%;
+        altura: automática;
+    }
+
+    .container-info {
+        margem: 30px 20px;
+        margem superior: 80px;
+        preenchimento: 30px 20px;
+        raio da borda: 15px;
+        box-shadow: 0 0 15px 4px #A020F0;
+    }
+
+    .container-info h2 {
+        tamanho da fonte: 3rem;
+        margem-inferior: 30px;
+        margem-esquerda: 0;
+        alinhamento do texto: centralizado;
+    }
+
+    .container-info p {
+        tamanho da fonte: 1,2rem;
+        peso da fonte: 600;
+        margem-esquerda: 0;
+        alinhamento do texto: centralizado;
+    }
+
+    .features-title {
+        tamanho da fonte: 4rem;
+    }
+
+    .features-grid {
+        margem superior: 60px;
+        intervalo: 4rem;
+    }
+
+    .cartão-de-recurso {
+        largura máxima: 220px;
+        preenchimento: 2,5rem 1,2rem;
+    }
+
+    .feature-icon {
+        largura: 80px;
+        altura: 80px;
+    }
+
+    .cartão-de-recurso p {
+        tamanho da fonte: 0,95rem;
+    }
+
+    .formulário-de-pré-registro {
+        largura máxima: 500px;
+        preenchimento: 3rem 2rem;
+        margem superior: 80px;
+    }
+
+    .formulário-de-pré-registro h2 {
+        tamanho da fonte: 2,2rem;
+    }
+
+    .formulário-de-pré-registro p {
+        tamanho da fonte: 1rem;
+    }
+
+    Entrada .form-group,
+    .form-group selecionar {
+        tamanho da fonte: 0,95rem;
+        preenchimento: 10px 14px;
+    }
+
+    .submit-button {
+        tamanho da fonte: 1rem;
+        preenchimento: 12px 24px;
+    }
+
+    .hero-message {
+        margem superior: 120px;
+        preenchimento: 0 20px;
+        intervalo: 3rem;
+    }
+
+    .linha2 {
+        largura: 95%;
+        margem: 25px 0;
+    }
+
+    .mensagem-principal {
+        tamanho da fonte: 3,5rem;
+    }
+
+    .rodapé {
+        preenchimento: 2rem 2rem;
+        raio da borda: 20px 20px 0 0;
+    }
+    
+    .footer-top {
+        flex-wrap: envolver;
+        intervalo: 2rem;
+        alinhamento de texto: esquerda;
+    }
+    
+    .footer-logo img {
+        largura: 140px;
+    }
+    
+    .footer-logo p {
+        tamanho da fonte: 1rem;
+        largura máxima: 320px;
+    }
+    
+    .footer-links ul,
+    .footer-contact ul {
+        margem superior: 10px;
+    }
+    
+    .social-icons uma imagem {
+        largura: 36px;
+        altura: 36px;
+    }
+    
+    .footer-bottom {
+        flex-wrap: envolver;
+        justificar-conteúdo: centralizado;
+        alinhamento do texto: centralizado;
+        intervalo: 1rem;
+    }
+    
+    .footer-policy {
+        flex-wrap: envolver;
+        justificar-conteúdo: centralizado;
+        intervalo: 1rem;
+        margem-superior: 1rem;
+        ordem: -1;
+    }
+}
+
+
+
+@media (max-width: 768px) {
+    .nav-center {
+        posição: absoluta;
+        topo: 90px;
+        esquerda: 0;
+        largura: 100%;
+        fundo: rgba(30,30,30,0.9);
+        exibir: nenhum;
+        flex-direction: coluna;
+        alinhamento-itens: centro;
+        raio-da-borda-inferior-esquerda: 15px;
+        raio-da-borda-inferior-direita: 15px;
+        box-shadow: 0px 8px 8px #5C128A;
+        preenchimento-inferior: 10px;
+        índice z: 99; /* para ficar logo abaixo da barra de navegação */
+    }
+
+    .nav-center.active {
+        Exibir: flexível;
+    }
+
+    .nav-links {
+        flex-direction: coluna;
+        alinhamento-itens: centro;
+        espaço: 20px;
+        preenchimento: 20px 0;
+    }
+
+    .hambúrguer {
+        Exibir: flexível;
+    }
+
+    .nav-actions {
+        espaçamento: 10px;
+    }
+
+    #alternar tema {
+        preenchimento: 6px 10px;
+        tamanho da fonte: 1rem;
+    }
+
+    .theme-switch {
+        largura: 50px;
+        altura: 24px;
+    }
+
+    .slider:before {
+        altura: 18px;
+        largura: 18px;
+        esquerda: 3px;
+        parte inferior: 3px;
+    }
+
+    input:checked + .slider:before {
+        transformar: traduzirX(26px);
+    }
+
+    .pré-registro {
+        flex-direction: coluna;
+        alinhamento-itens: centro;
+        justificar-conteúdo: centralizado;
+        margem: 40px 20px;
+        espaçamento: 30px;
+    }
+
+    .imagem-de-pré-registro {
+        ordem: -1;
+        margem superior: 80px;
+    }
+
+    .texto {
+        alinhamento do texto: centralizado;
+        ordem: 1;
+    }
+
+    .texto h1 {
+        tamanho da fonte: 2,2rem;
+    }
+
+    .cta botão {
+        tamanho da fonte: 1rem;
+        preenchimento: 12px 24px;
+        margem superior: 20px;
+        largura: 100%;
+        largura máxima: 300px;
+    }
+
+    .imagem-de-pré-registro img {
+        largura máxima: 90%;
+        altura: automática;
+    }
+
+    .container-info {
+        margem: 20px 15px;
+        margem superior: 60px;
+        preenchimento: 20px 15px;
+        raio da borda: 12px;
+        box-shadow: 0 0 12px 3px #A020F0;
+    }
+
+    .container-info h2 {
+        tamanho da fonte: 2,2rem;
+    }
+
+    .container-info p {
+        tamanho da fonte: 1rem;
+        peso da fonte: 600;
+    }
+
+    .top-section {
+        margem superior: 80px;
+        preenchimento: 3rem 1rem;
+    }
+
+    .features-title {
+        tamanho da fonte: 2,8rem;
+    }
+
+    .features-grid {
+        flex-direction: coluna;
+        alinhamento-itens: centro;
+        intervalo: 3rem;
+        margem superior: 50px;
+    }
+
+    .cartão-de-recurso {
+        largura máxima: 90%;
+        preenchimento: 2rem 1rem;
+    }
+
+    .feature-icon {
+        largura: 70px;
+        altura: 70px;
+    }
+
+    .cartão-de-recurso p {
+        tamanho da fonte: 0,9rem;
+    }
+
+    .rivalix-videos h2 {
+        tamanho da fonte: 3rem;
+    }
+
+    .rivalix-videos .subtitulo {
+        tamanho da fonte: 1rem;
+    }
+
+    .formulário-de-pré-registro {
+        largura máxima: 90%;
+        preenchimento: 2,5rem 1,5rem;
+        margem superior: 60px;
+    }
+
+    .formulário-de-pré-registro h2 {
+        tamanho da fonte: 2rem;
+    }
+
+    .formulário-de-pré-registro p {
+        tamanho da fonte: 0,95rem;
+    }
+
+    Entrada .form-group,
+    .form-group selecionar {
+        tamanho da fonte: 0,9rem;
+        preenchimento: 10px 12px;
+    }
+
+    .submit-button {
+        tamanho da fonte: 0,95rem;
+        preenchimento: 10px 20px;
+        largura: 100%;
+        largura máxima: 300px;
+    }
+
+    .hero-message {
+        margem superior: 100px;
+        preenchimento: 0 15px;
+        intervalo: 2,5rem;
+    }
+
+    .linha1 {
+        largura: 100%;
+        margem: 20px 0;
+    }
+
+    .mensagem-principal {
+        tamanho da fonte: 2rem;
+        altura da linha: 1,3;
+    }
+
+    .rodapé {
+        preenchimento: 1,5rem 1rem;
+        raio da borda: 15px 15px 0 0;
+    }
+    
+    .footer-top {
+        intervalo: 2rem;
+    }
+    
+    .footer-logo img {
+        largura: 120px;
+    }
+    
+    .footer-logo p {
+        tamanho da fonte: 0,95rem;
+        largura máxima: 260px;
+        margem: 0 automático;
+    }
+    
+    .social-icons uma imagem {
+        largura: 32px;
+        altura: 32px;
+    }
+    
+    .footer-links ul,
+    .footer-contact ul {
+        margem superior: 8px;
+    }
+    
+    .footer-bottom {
+        tamanho da fonte: 0,85rem;
+        intervalo: 0,8rem;
+    }
+    
+    .footer-policy {
+        flex-direction: coluna;
+        alinhamento-itens: centro;
+        intervalo: 0,5rem;
+    }
+}
+
+
+
+/*Tema Claro*/
+
+corpo {
+    transição: cor de fundo 0,5s de suavização, cor 0,5s de suavização;
+}
+
+.navbar,
+.nav-links a,
+#alternar tema {
+    transição: todos os 0,5s de facilidade;
+}
+
+/* Tema Estilos Light */
+body.light-theme {
+    fundo: #e8e5DE;
+    cor: #1e1e1e;
+    Transição: 0,2s;
+}
+
+body.light-theme .navbar {
+    fundo: #e8e5DE;
+    box-shadow: 0px 8px 8px #5C128A;
+}
+
+body.light-theme .nav-links a {
+    cor: #1e1e1e;
+}
+
+body.light-theme #theme-toggle {
+    cor: #1e1e1e;
+    cor da borda: #1e1e1e;
+}
+
+body.light-theme #theme-toggle:hover {
+    cor de fundo: #5C128A;
+    cor: #e8e5DE;
+    cor da borda: #5C128A;
+}
+
+body.light-theme .text h1 {
+    Cor: #1E062E;
+}
+
+body.light-theme .container-info h2{
+    cor: #1e1e1e;
+}
+
+body.light-theme .container-info p{
+    cor: #1e1e1e;
+}
+
+body.light-theme .features-title {
+    cor: #1e1e1e;
+}
+
+body.light-theme .feature-card p {
+    Cor: #5C128A;
+}
+
+body.light-theme .pre-registration-form {
+    fundo: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 20px rgba(160, 32, 240, 0.2);
+}
+
+body.light-theme .pre-registration-form h2 {
+    cor: #1e1e1e;
+}
+
+body.light-theme .pre-registration-form p {
+    cor: #1e1e1e;
+}
+
+body.light-theme .form-group label {
+    cor: #1e1e1e;
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group select {
+    fundo: rgba(0, 0, 0, 0.05);
+    cor: #1e1e1e;
+    borda: 1px sólida #5C128A;
+}
+
+body.light-theme .form-group input::placeholder {
+    cor: #777;
+}
+
+body.light-theme .form-group opção {
+    cor de fundo: #fff;
+    cor: #1e1e1e;
+}
+
+body.light-theme .submit-button {
+    Cor: #FF6A00;
+    cor da borda: #FF6A00;
+    fundo: transparente;
+}
+
+body.light-theme .submit-button:hover {
+    transformar: translateY(-3px);
+    box-shadow: 0 0 16px rgb(255, 106, 0);
+    sombra-texto: 0 0 16px rgb(255, 106, 0);
+}
+
+body.light-theme .hero-message {
+    margem superior: 150px;
+}
+
+body.light-theme .main-message {
+    cor: #1e1e1e;
+}
+
+body.light-theme .lgpd-consent{
+    cor: #000;
+}
+
+body.light-theme .line2 {
+    fundo: #5C128A;
+    filtro: desfoque(2px);
+    opacidade: 0,9;
+    sombra de caixa:
+      0 0 10px #5C128A,
+      0 0 20px #5C128A,
+      0 0 30px #5C128A,
+      0 0 50px #5C128A;
+    transição: todos os 0,4s de facilidade;
+}
+
+body.light-theme .footer {
+    fundo: #e8e5DE;
+    Cor: #1E062E;
+    sombra de caixa:
+      0 0 10px #5C128A,
+      0 0 20px #5C128A,
+      0 0 40px #5C128A;
+    borda: 2px sólida #ffffff;
+}
+
+body.light-theme .footer-top {
+    borda inferior: 2px sólida #5C128A;
+}
+
+body.light-theme .footer-logo p,
+body.light-theme .footer-links a,
+body.light-theme .footer-contact li,
+body.light-theme .footer-bottom p,
+body.light-theme .footer-policy a {
+    Cor: #1E062E;
+}
+
+body.light-theme .rivalix-videos .subtitulo {
+    cor: #000;
+}
+
+body.light-theme .footer-links a:hover,
+body.light-theme .footer-policy a:hover {
+    Cor: #FF6A00;
+}
+
+body.light-theme .social-icons a img {
+    filtro: brilho(0.2);
+    transição: filtro 0,3s suavização;
+}
+
+body.light-theme .line {
+    cor de fundo: #1f1f1f;
+}
+
+body.light-theme .nav-center {
+    fundo: rgb(232,229,222, 0.8);
+}
+
+.modal-sucesso {
+    margem superior: 30px;
+    posição: relativa;
+    topo: 0;
+    esquerda: 0;
+    Exibir: flexível;
+    justificar-conteúdo: centralizado;
+    alinhamento-itens: centro;
+    Índice z: 5;
+    exibir: nenhum;
+}
+  
+.modal-conteudo {
+    fundo: #1c1c1c;
+    borda: 2px sólida #8300ff;
+    raio da borda: 12px;
+    preenchimento: 30px;
+    largura máxima: 1200px;
+    alinhamento do texto: centralizado;
+    box-shadow: 0 0 25px #8300ff55;
+    cor: #00ffcc;
+    família de fontes: 'Montserrat', sem serifa;
+}
+  
+.modal-conteudo p {
+    tamanho da fonte: 1rem;
+    margem-inferior: 20px;
+}
+  
+.modal-conteudo botão {
+    fundo: #ff6a00;
+    cor: #000;
+    fronteira: nenhuma;
+    preenchimento: 10px 20px;
+    raio da borda: 8px;
+    peso da fonte: negrito;
+    cursor: ponteiro;
+    transição: fundo 0,3s;
+}
+  
+Botão .modal-conteudo:hover {
+    fundo: #e55c00;
+}
+
